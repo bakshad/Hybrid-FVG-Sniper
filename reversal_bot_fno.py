@@ -15,7 +15,7 @@ LOG_FILE = "trade_performance_log.csv"
 POSITIONS_FILE = "active_positions_reversal.json"
 IST = pytz.timezone('Asia/Kolkata')
 
-# UPDATED F&O UNIVERSE (MAY 2026) - Fixed Ticker Mismatches
+# COMPLETE PRODUCTION F&O UNIVERSE (UPDATED)
 SYMBOLS = [
     "^NSEI", "^NSEBANK", "360ONE.NS", "ABB.NS", "ABBOTINDIA.NS", "ABCAPITAL.NS", "ABFRL.NS", "ACC.NS", 
     "ADANIENSOL.NS", "ADANIENT.NS", "ADANIGREEN.NS", "ADANIPORTS.NS", "ADANIPOWER.NS", "ALKEM.NS", 
@@ -24,23 +24,23 @@ SYMBOLS = [
     "BAJAJ-AUTO.NS", "BAJAJFINSV.NS", "BAJFINANCE.NS", "BALKRISIND.NS", "BALRAMCHIN.NS", "BANDHANBNK.NS", 
     "BANKBARODA.NS", "BEL.NS", "BERGEPAINT.NS", "BHARATFORG.NS", "BHARTIARTL.NS", "BHEL.NS", "BIOCON.NS", 
     "BOSCHLTD.NS", "BPCL.NS", "BRITANNIA.NS", "BSOFT.NS", "CAMPUS.NS", "CANBK.NS", "CANFINHOME.NS", "CHAMBLFERT.NS", 
-    "CHOLAFIN.NS", "CIPLA.NS", "COALINDIA.NS", "COFORGE.NS", "COLPAL.NS", "CONCOR.NS", "COROMANDEL.NS", 
+    "CHOLAFIN.NS", "CIPLA.NS", "COALINDIA.NS", "COCHINSHIP.NS", "COFORGE.NS", "COLPAL.NS", "CONCOR.NS", "COROMANDEL.NS", 
     "CROMPTON.NS", "CUB.NS", "CUMMINSIND.NS", "CYIENT.NS", "DABUR.NS", "DALBHARAT.NS", "DEEPAKNTR.NS", 
     "DELHIVERY.NS", "DIVISLAB.NS", "DIXON.NS", "DLF.NS", "DRREDDY.NS", "EICHERMOT.NS", "ESCORTS.NS", 
-    "EXIDEIND.NS", "FEDERALBNK.NS", "FORTIS.NS", "GAIL.NS", "GLENMARK.NS", "GMRAIRPORT.NS", 
-    "GNFC.NS", "GODREJCP.NS", "GODREJPROP.NS", "GRANULES.NS", "GRASIM.NS", "GUJGASLTD.NS", "HAL.NS", 
-    "HAVELLS.NS", "HCLTECH.NS", "HDFCBANK.NS", "HDFCLIFE.NS", "HEROMOTOCO.NS", "HFCL.NS", "HINDALCO.NS", 
-    "HINDCOPPER.NS", "HINDPETRO.NS", "HINDUNILVR.NS", "ICICIBANK.NS", "ICICIGI.NS", "ICICIPRULI.NS", 
-    "IDFCFIRSTB.NS", "IEX.NS", "IGL.NS", "INDHOTEL.NS", "INDIACEM.NS", "INDIAMART.NS", 
-    "INDIGO.NS", "INDUSINDBK.NS", "INDUSTOWER.NS", "INFY.NS", "IOC.NS", "IRCTC.NS", "IRFC.NS", "ITC.NS", 
-    "JINDALSTEL.NS", "JSL.NS", "JSWENERGY.NS", "JSWSTEEL.NS", "JUBLFOOD.NS", "KAYNES.NS", "KOTAKBANK.NS", 
-    "L&TFH.NS", "LALPATHLAB.NS", "LICHSGFIN.NS", "LICI.NS", "LT.NS", "LTIMINDRE.NS", "LTTS.NS", "LUPIN.NS", 
-    "M&M.NS", "M&MFIN.NS", "MANAPPURAM.NS", "MARICO.NS", "MARUTI.NS", "MAXHEALTH.NS", "MCX.NS", "METROPOLIS.NS", 
-    "MFSL.NS", "MGL.NS", "MOTHERSON.NS", "MPHASIS.NS", "MRF.NS", "MUTHOOTFIN.NS", "NATIONALUM.NS", 
-    "NAVINFLUOR.NS", "NESTLEIND.NS", "NHPC.NS", "NMDC.NS", "NTPC.NS", "NYKAA.NS", "OBEROIRLTY.NS", 
-    "OFSS.NS", "OIL.NS", "ONGC.NS", "PAGEIND.NS", "PEL.NS", "PERSISTENT.NS", "PETRONET.NS", "PFC.NS", 
-    "PHOENIXLTD.NS", "PIDILITIND.NS", "PIIND.NS", "PNB.NS", "POLYCAB.NS", "POWERTGRID.NS", "PVRINOX.NS", 
-    "RECLTD.NS", "RELIANCE.NS", "SAIL.NS", "SBICARD.NS", "SBILIFE.NS", "SBIN.NS", "SHREECEM.NS", 
+    "EXIDEIND.NS", "FEDERALBNK.NS", "FORTIS.NS", "GAIL.NS", "GLENMARK.NS", "GMRAIRPORT.NS", "GNFC.NS", 
+    "GODREJCP.NS", "GODREJPROP.NS", "GRANULES.NS", "GRASIM.NS", "GUJGASLTD.NS", "HAL.NS", "HAVELLS.NS", 
+    "HCLTECH.NS", "HDFCBANK.NS", "HDFCLIFE.NS", "HEROMOTOCO.NS", "HFCL.NS", "HINDALCO.NS", "HINDCOPPER.NS", 
+    "HINDPETRO.NS", "HINDUNILVR.NS", "HYUNDAI.NS", "ICICIBANK.NS", "ICICIGI.NS", "ICICIPRULI.NS", "IDFCFIRSTB.NS", 
+    "IEX.NS", "IGL.NS", "INDHOTEL.NS", "INDIACEM.NS", "INDIAMART.NS", "INDIGO.NS", "INDUSINDBK.NS", 
+    "INDUSTOWER.NS", "INFY.NS", "IOC.NS", "IRCTC.NS", "IRFC.NS", "ITC.NS", "JINDALSTEL.NS", "JSL.NS", 
+    "JSWENERGY.NS", "JSWSTEEL.NS", "JUBLFOOD.NS", "KAYNES.NS", "KOTAKBANK.NS", "L&TFH.NS", "LALPATHLAB.NS", 
+    "LICHSGFIN.NS", "LICI.NS", "LT.NS", "LTIMINDRE.NS", "LTTS.NS", "LUPIN.NS", "M&M.NS", "M&MFIN.NS", 
+    "MANAPPURAM.NS", "MARICO.NS", "MARUTI.NS", "MAXHEALTH.NS", "MCX.NS", "METROPOLIS.NS", "MFSL.NS", 
+    "MGL.NS", "MOTHERSON.NS", "MOTILALOFS.NS", "MPHASIS.NS", "MRF.NS", "MUTHOOTFIN.NS", "NAM-INDIA.NS", 
+    "NATIONALUM.NS", "NAVINFLUOR.NS", "NESTLEIND.NS", "NHPC.NS", "NMDC.NS", "NTPC.NS", "NYKAA.NS", 
+    "OBEROIRLTY.NS", "OFSS.NS", "OIL.NS", "ONGC.NS", "PAGEIND.NS", "PEL.NS", "PERSISTENT.NS", "PETRONET.NS", 
+    "PFC.NS", "PHOENIXLTD.NS", "PIDILITIND.NS", "PIIND.NS", "PNB.NS", "POLYCAB.NS", "POWERTGRID.NS", 
+    "PVRINOX.NS", "RECLTD.NS", "RELIANCE.NS", "SAIL.NS", "SBICARD.NS", "SBILIFE.NS", "SBIN.NS", "SHREECEM.NS", 
     "SHRIRAMFIN.NS", "SIEMENS.NS", "SRF.NS", "SUNPHARMA.NS", "SUNTV.NS", "SYNGENE.NS", "TATACHEM.NS", 
     "TATACOMM.NS", "TATACONSUM.NS", "TATAELXSI.NS", "TATAMOTORS.NS", "TATAPOWER.NS", "TATASTEEL.NS", 
     "TCS.NS", "TECHM.NS", "TITAN.NS", "TORNTPHARM.NS", "TRENT.NS", "TRIDENT.NS", "TVSMOTOR.NS", 
@@ -55,9 +55,8 @@ def send_telegram(msg):
 def get_fvg(df):
     if len(df) < 3: return None, 0, 0
     c1, c3 = df.iloc[-3], df.iloc[-1]
-    # Fixed FVG logic: checks for price gaps between C1 and C3
-    if c1['High'] < c3['Low']: return "BULLISH", c1['High'], c3['Low']
-    if c1['Low'] > c3['High']: return "BEARISH", c3['High'], c1['Low']
+    if c1['High'] < c3['Low']: return "BULLISH", float(c1['High']), float(c3['Low'])
+    if c1['Low'] > c3['High']: return "BEARISH", float(c3['High']), float(c1['Low'])
     return None, 0, 0
 
 def fetch_data(s, p, i):
@@ -66,7 +65,8 @@ def fetch_data(s, p, i):
         if df.empty: return None
         if isinstance(df.columns, pd.MultiIndex): df.columns = df.columns.get_level_values(0)
         df['EMA33'] = df['Close'].ewm(span=33, adjust=False).mean()
-        # ATR Calculation for Volatility-based Exit
+        
+        # 14-period ATR for dynamic targets/stop loss scaling
         hl = df['High'] - df['Low']
         hcp = abs(df['High'] - df['Close'].shift())
         lcp = abs(df['Low'] - df['Close'].shift())
@@ -75,29 +75,41 @@ def fetch_data(s, p, i):
     except: return None
 
 def process_symbol(s, positions):
-    df_d = fetch_data(s, "10d", "1d")
+    # FIXED: Tracking 60-minute intervals to unlock multiple premium setup opportunities
+    df_htf = fetch_data(s, "10d", "60m")
     df_15 = fetch_data(s, "3d", "15m")
-    if df_d is None or df_15 is None: return None
+    if df_htf is None or df_15 is None: return None
 
-    d_fvg_type, d_min, d_max = get_fvg(df_d)
-    m15, m15p = df_15.iloc[-1], df_15.iloc[-2]
+    htf_fvg_type, htf_min, htf_max = get_fvg(df_htf)
+    m15 = df_15.iloc[-1]
     cp, ema33, atr = float(m15['Close']), float(m15['EMA33']), float(m15['ATR'])
 
-    is_buy = (d_fvg_type == "BULLISH" and m15['Low'] <= d_max and cp > m15p['High'])
-    is_sell = (d_fvg_type == "BEARISH" and m15['High'] >= d_min and cp < m15p['Low'])
+    # Dynamic protection threshold to catch fast-moving targets
+    buffer = atr * 0.1
+    
+    # CRITICAL WICK RATIO SECURITY CHECK (1.2x Body)
+    o, c, h, l = float(m15['Open']), float(m15['Close']), float(m15['High']), float(m15['Low'])
+    body = abs(o - c) + 1e-9
+    has_bottom_wick = (min(o, c) - l) > (body * 1.2)
+    has_top_wick = (h - max(o, c)) > (body * 1.2)
+
+    # FIXED: Triggers dynamically off early local candle validation inside the structural box
+    is_buy = (htf_fvg_type == "BULLISH" and (m15['Low'] <= htf_max + buffer) and (cp > o) and has_bottom_wick)
+    is_sell = (htf_fvg_type == "BEARISH" and (m15['High'] >= htf_min - buffer) and (cp < o) and has_top_wick)
 
     if (is_buy or is_sell) and s not in positions:
         side = "BUY" if is_buy else "SELL"
+        
+        # Term trades below S2/S3 (tracked via 33 EMA cross proximity here) as Jackpot setups
         rank = "🔥 JACKPOT" if (side == "BUY" and cp < ema33) or (side == "SELL" and cp > ema33) else "💎 ELITE"
         
-        # Risk management using ATR (min 0.3% move)
         risk = max(atr, cp * 0.003) 
         targets = [round(cp + (risk * r) if side == "BUY" else cp - (risk * r), 2) for r in [1.5, 3, 5]]
         sl = round(cp - risk if side == "BUY" else cp + risk, 2)
 
         msg = (f"{rank}: {s.replace('.NS','')}\n"
                f"---------------------------\n"
-               f"📍 HTF: Daily {d_fvg_type} FVG\n"
+               f"📍 HTF: 60m {htf_fvg_type} FVG\n"
                f"🔥 {side} @ {cp:.2f}\n"
                f"🎯 T1: {targets[0]} | SL: {sl:.2f}")
         send_telegram(msg)
