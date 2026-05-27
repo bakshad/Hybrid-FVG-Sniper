@@ -1,1 +1,50 @@
-{}
+{
+    "ADANIPOWER.NS": {
+        "Entry": 249.39999389648438,
+        "Targets": [
+            251.26,
+            253.11,
+            255.59
+        ],
+        "T_Idx": 0,
+        "SL": 248.16,
+        "Side": "BUY",
+        "Rank": "\ud83d\udc8e ELITE"
+    },
+    "DELHIVERY.NS": {
+        "Entry": 459.75,
+        "Targets": [
+            457.68,
+            455.61,
+            452.85
+        ],
+        "T_Idx": 0,
+        "SL": 461.13,
+        "Side": "SELL",
+        "Rank": "\ud83d\udc8e ELITE"
+    },
+    "ICICIGI.NS": {
+        "Entry": 1849.0,
+        "Targets": [
+            1840.68,
+            1832.36,
+            1821.27
+        ],
+        "T_Idx": 0,
+        "SL": 1854.55,
+        "Side": "SELL",
+        "Rank": "\ud83d\udc8e ELITE"
+    },
+    "ICICIPRULI.NS": {
+        "Entry": 523.5499877929688,
+        "Targets": [
+            526.47,
+            529.4,
+            533.3
+        ],
+        "T_Idx": 0,
+        "SL": 521.6,
+        "Side": "BUY",
+        "Rank": "\ud83d\udc8e ELITE"
+    }
+}
