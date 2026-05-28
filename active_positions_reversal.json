@@ -46,5 +46,17 @@
         "SL": 521.6,
         "Side": "BUY",
         "Rank": "\ud83d\udc8e ELITE"
+    },
+    "COALINDIA.NS": {
+        "Entry": 463.6000061035156,
+        "Targets": [
+            469.41,
+            475.23,
+            482.98
+        ],
+        "T_Idx": 0,
+        "SL": 459.73,
+        "Side": "BUY",
+        "Rank": "\ud83d\udc8e ELITE"
     }
 }
