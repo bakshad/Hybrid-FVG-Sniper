@@ -11,18 +11,6 @@
         "Side": "SELL",
         "Rank": "\ud83d\udc8e ELITE"
     },
-    "ICICIGI.NS": {
-        "Entry": 1849.0,
-        "Targets": [
-            1840.68,
-            1832.36,
-            1821.27
-        ],
-        "T_Idx": 2,
-        "SL": 1849.0,
-        "Side": "SELL",
-        "Rank": "\ud83d\udc8e ELITE"
-    },
     "AMBUJACEM.NS": {
         "Entry": 455.45001220703125,
         "Targets": [
@@ -30,8 +18,8 @@
             448.94,
             444.59
         ],
-        "T_Idx": 0,
-        "SL": 457.62,
+        "T_Idx": 1,
+        "SL": 455.45001220703125,
         "Side": "SELL",
         "Rank": "\ud83d\udc8e ELITE"
     },
@@ -119,18 +107,6 @@
         "Side": "BUY",
         "Rank": "\ud83d\udc8e ELITE"
     },
-    "NMDC.NS": {
-        "Entry": 91.72000122070312,
-        "Targets": [
-            91.21,
-            90.7,
-            90.02
-        ],
-        "T_Idx": 2,
-        "SL": 91.72000122070312,
-        "Side": "SELL",
-        "Rank": "\ud83d\udc8e ELITE"
-    },
     "TRENT.NS": {
         "Entry": 4315.60009765625,
         "Targets": [
@@ -164,18 +140,6 @@
         ],
         "T_Idx": 0,
         "SL": 1843.11,
-        "Side": "SELL",
-        "Rank": "\ud83d\udc8e ELITE"
-    },
-    "BALKRISIND.NS": {
-        "Entry": 2177.5,
-        "Targets": [
-            2164.66,
-            2151.83,
-            2134.71
-        ],
-        "T_Idx": 0,
-        "SL": 2186.06,
         "Side": "SELL",
         "Rank": "\ud83d\udc8e ELITE"
     },
@@ -251,18 +215,6 @@
         "Side": "BUY",
         "Rank": "\ud83d\udc8e ELITE"
     },
-    "MARUTI.NS": {
-        "Entry": 13218.0,
-        "Targets": [
-            13148.89,
-            13079.79,
-            12987.64
-        ],
-        "T_Idx": 0,
-        "SL": 13264.07,
-        "Side": "SELL",
-        "Rank": "\ud83d\udc8e ELITE"
-    },
     "OFSS.NS": {
         "Entry": 10045.0,
         "Targets": [
@@ -320,6 +272,66 @@
         ],
         "T_Idx": 0,
         "SL": 1331.58,
+        "Side": "SELL",
+        "Rank": "\ud83d\udc8e ELITE"
+    },
+    "BRITANNIA.NS": {
+        "Entry": 5267.0,
+        "Targets": [
+            5243.3,
+            5219.6,
+            5187.99
+        ],
+        "T_Idx": 0,
+        "SL": 5282.8,
+        "Side": "SELL",
+        "Rank": "\ud83d\udc8e ELITE"
+    },
+    "HEROMOTOCO.NS": {
+        "Entry": 4983.5,
+        "Targets": [
+            4957.09,
+            4930.68,
+            4895.46
+        ],
+        "T_Idx": 0,
+        "SL": 5001.11,
+        "Side": "SELL",
+        "Rank": "\ud83d\udc8e ELITE"
+    },
+    "INFY.NS": {
+        "Entry": 1189.5,
+        "Targets": [
+            1183.68,
+            1177.86,
+            1170.11
+        ],
+        "T_Idx": 0,
+        "SL": 1193.38,
+        "Side": "SELL",
+        "Rank": "\ud83d\udd25 JACKPOT"
+    },
+    "KAYNES.NS": {
+        "Entry": 3146.0,
+        "Targets": [
+            3127.31,
+            3108.63,
+            3083.71
+        ],
+        "T_Idx": 0,
+        "SL": 3158.46,
+        "Side": "SELL",
+        "Rank": "\ud83d\udc8e ELITE"
+    },
+    "NAVINFLUOR.NS": {
+        "Entry": 7198.0,
+        "Targets": [
+            7157.55,
+            7117.11,
+            7063.18
+        ],
+        "T_Idx": 0,
+        "SL": 7224.96,
         "Side": "SELL",
         "Rank": "\ud83d\udc8e ELITE"
     }
