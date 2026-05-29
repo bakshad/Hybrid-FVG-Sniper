@@ -30,7 +30,7 @@
             132.1,
             131.12
         ],
-        "T_Idx": 1,
+        "T_Idx": 2,
         "SL": 133.5800018310547,
         "Side": "SELL",
         "Rank": "\ud83d\udc8e ELITE"
@@ -42,7 +42,7 @@
             1761.26,
             1746.91
         ],
-        "T_Idx": 1,
+        "T_Idx": 2,
         "SL": 1782.800048828125,
         "Side": "SELL",
         "Rank": "\ud83d\udc8e ELITE"
@@ -54,21 +54,9 @@
             2831.92,
             2812.54
         ],
-        "T_Idx": 0,
-        "SL": 2870.69,
+        "T_Idx": 1,
+        "SL": 2861.0,
         "Side": "SELL",
-        "Rank": "\ud83d\udc8e ELITE"
-    },
-    "GMRAIRPORT.NS": {
-        "Entry": 102.94000244140625,
-        "Targets": [
-            104.49,
-            106.03,
-            108.1
-        ],
-        "T_Idx": 0,
-        "SL": 101.91,
-        "Side": "BUY",
         "Rank": "\ud83d\udc8e ELITE"
     },
     "JSWSTEEL.NS": {
@@ -78,7 +66,7 @@
             1288.61,
             1279.68
         ],
-        "T_Idx": 1,
+        "T_Idx": 2,
         "SL": 1302.0,
         "Side": "SELL",
         "Rank": "\ud83d\udc8e ELITE"
@@ -90,8 +78,8 @@
             2932.09,
             2874.94
         ],
-        "T_Idx": 0,
-        "SL": 3046.37,
+        "T_Idx": 1,
+        "SL": 3017.800048828125,
         "Side": "SELL",
         "Rank": "\ud83d\udc8e ELITE"
     },
@@ -102,8 +90,8 @@
             551.61,
             557.22
         ],
-        "T_Idx": 0,
-        "SL": 540.4,
+        "T_Idx": 1,
+        "SL": 543.2000122070312,
         "Side": "BUY",
         "Rank": "\ud83d\udc8e ELITE"
     },
@@ -150,8 +138,8 @@
             503.07,
             499.85
         ],
-        "T_Idx": 0,
-        "SL": 509.51,
+        "T_Idx": 1,
+        "SL": 507.8999938964844,
         "Side": "SELL",
         "Rank": "\ud83d\udc8e ELITE"
     },
@@ -162,8 +150,8 @@
             282.58,
             279.86
         ],
-        "T_Idx": 0,
-        "SL": 288.01,
+        "T_Idx": 1,
+        "SL": 286.6499938964844,
         "Side": "SELL",
         "Rank": "\ud83d\udc8e ELITE"
     },
@@ -203,18 +191,6 @@
         "Side": "SELL",
         "Rank": "\ud83d\udc8e ELITE"
     },
-    "JINDALSTEL.NS": {
-        "Entry": 1220.199951171875,
-        "Targets": [
-            1226.79,
-            1233.38,
-            1242.16
-        ],
-        "T_Idx": 0,
-        "SL": 1215.81,
-        "Side": "BUY",
-        "Rank": "\ud83d\udc8e ELITE"
-    },
     "OFSS.NS": {
         "Entry": 10045.0,
         "Targets": [
@@ -234,34 +210,10 @@
             500.0,
             495.86
         ],
-        "T_Idx": 0,
-        "SL": 508.27,
+        "T_Idx": 1,
+        "SL": 506.20001220703125,
         "Side": "SELL",
         "Rank": "\ud83d\udc8e ELITE"
-    },
-    "TITAN.NS": {
-        "Entry": 4095.199951171875,
-        "Targets": [
-            4073.38,
-            4051.55,
-            4022.45
-        ],
-        "T_Idx": 0,
-        "SL": 4109.75,
-        "Side": "SELL",
-        "Rank": "\ud83d\udc8e ELITE"
-    },
-    "TORNTPHARM.NS": {
-        "Entry": 4465.39990234375,
-        "Targets": [
-            4492.75,
-            4520.11,
-            4556.58
-        ],
-        "T_Idx": 0,
-        "SL": 4447.16,
-        "Side": "BUY",
-        "Rank": "\ud83d\udd25 JACKPOT"
     },
     "UBL.NS": {
         "Entry": 1327.5999755859375,
@@ -270,8 +222,8 @@
             1315.65,
             1307.69
         ],
-        "T_Idx": 0,
-        "SL": 1331.58,
+        "T_Idx": 1,
+        "SL": 1327.5999755859375,
         "Side": "SELL",
         "Rank": "\ud83d\udc8e ELITE"
     },
@@ -282,8 +234,8 @@
             5219.6,
             5187.99
         ],
-        "T_Idx": 0,
-        "SL": 5282.8,
+        "T_Idx": 1,
+        "SL": 5267.0,
         "Side": "SELL",
         "Rank": "\ud83d\udc8e ELITE"
     },
@@ -294,8 +246,8 @@
             4930.68,
             4895.46
         ],
-        "T_Idx": 0,
-        "SL": 5001.11,
+        "T_Idx": 1,
+        "SL": 4983.5,
         "Side": "SELL",
         "Rank": "\ud83d\udc8e ELITE"
     },
@@ -306,8 +258,8 @@
             1177.86,
             1170.11
         ],
-        "T_Idx": 0,
-        "SL": 1193.38,
+        "T_Idx": 1,
+        "SL": 1189.5,
         "Side": "SELL",
         "Rank": "\ud83d\udd25 JACKPOT"
     },
@@ -330,8 +282,92 @@
             7117.11,
             7063.18
         ],
+        "T_Idx": 1,
+        "SL": 7198.0,
+        "Side": "SELL",
+        "Rank": "\ud83d\udc8e ELITE"
+    },
+    "360ONE.NS": {
+        "Entry": 1096.199951171875,
+        "Targets": [
+            1089.13,
+            1082.06,
+            1072.63
+        ],
         "T_Idx": 0,
-        "SL": 7224.96,
+        "SL": 1100.91,
+        "Side": "SELL",
+        "Rank": "\ud83d\udc8e ELITE"
+    },
+    "CHAMBLFERT.NS": {
+        "Entry": 465.25,
+        "Targets": [
+            462.11,
+            458.96,
+            454.77
+        ],
+        "T_Idx": 0,
+        "SL": 467.35,
+        "Side": "SELL",
+        "Rank": "\ud83d\udc8e ELITE"
+    },
+    "COCHINSHIP.NS": {
+        "Entry": 1466.5999755859375,
+        "Targets": [
+            1456.5,
+            1446.39,
+            1432.92
+        ],
+        "T_Idx": 0,
+        "SL": 1473.34,
+        "Side": "SELL",
+        "Rank": "\ud83d\udc8e ELITE"
+    },
+    "COLPAL.NS": {
+        "Entry": 2059.89990234375,
+        "Targets": [
+            2046.3,
+            2032.71,
+            2014.58
+        ],
+        "T_Idx": 0,
+        "SL": 2068.96,
+        "Side": "SELL",
+        "Rank": "\ud83d\udc8e ELITE"
+    },
+    "SHREECEM.NS": {
+        "Entry": 25275.0,
+        "Targets": [
+            25439.46,
+            25603.93,
+            25823.21
+        ],
+        "T_Idx": 0,
+        "SL": 25165.36,
+        "Side": "BUY",
+        "Rank": "\ud83d\udc8e ELITE"
+    },
+    "SUNPHARMA.NS": {
+        "Entry": 1799.199951171875,
+        "Targets": [
+            1787.6,
+            1775.99,
+            1760.52
+        ],
+        "T_Idx": 0,
+        "SL": 1806.94,
+        "Side": "SELL",
+        "Rank": "\ud83d\udc8e ELITE"
+    },
+    "TATACHEM.NS": {
+        "Entry": 757.2999877929688,
+        "Targets": [
+            753.36,
+            749.43,
+            744.18
+        ],
+        "T_Idx": 0,
+        "SL": 759.92,
         "Side": "SELL",
         "Rank": "\ud83d\udc8e ELITE"
     }
