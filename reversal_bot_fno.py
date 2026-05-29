@@ -15,7 +15,7 @@ LOG_FILE = "trade_performance_log.csv"
 POSITIONS_FILE = "active_positions_reversal.json"
 IST = pytz.timezone('Asia/Kolkata')
 
-# COMPLETE PRODUCTION F&O UNIVERSE (UPDATED)
+# COMPLETE PRODUCTION F&O UNIVERSE
 SYMBOLS = [
     "^NSEI", "^NSEBANK", "360ONE.NS", "ABB.NS", "ABBOTINDIA.NS", "ABCAPITAL.NS", "ABFRL.NS", "ACC.NS", 
     "ADANIENSOL.NS", "ADANIENT.NS", "ADANIGREEN.NS", "ADANIPORTS.NS", "ADANIPOWER.NS", "ALKEM.NS", 
@@ -66,7 +66,6 @@ def fetch_data(s, p, i):
         if isinstance(df.columns, pd.MultiIndex): df.columns = df.columns.get_level_values(0)
         df['EMA33'] = df['Close'].ewm(span=33, adjust=False).mean()
         
-        # 14-period ATR for dynamic targets/stop loss scaling
         hl = df['High'] - df['Low']
         hcp = abs(df['High'] - df['Close'].shift())
         lcp = abs(df['Low'] - df['Close'].shift())
@@ -75,7 +74,7 @@ def fetch_data(s, p, i):
     except: return None
 
 def process_symbol(s, positions):
-    # FIXED: Tracking 60-minute intervals to unlock multiple premium setup opportunities
+    # 60-minute High Timeframe for stable structural context
     df_htf = fetch_data(s, "10d", "60m")
     df_15 = fetch_data(s, "3d", "15m")
     if df_htf is None or df_15 is None: return None
@@ -84,23 +83,19 @@ def process_symbol(s, positions):
     m15 = df_15.iloc[-1]
     cp, ema33, atr = float(m15['Close']), float(m15['EMA33']), float(m15['ATR'])
 
-    # Dynamic protection threshold to catch fast-moving targets
     buffer = atr * 0.1
     
-    # CRITICAL WICK RATIO SECURITY CHECK (1.2x Body)
+    # CRITICAL: OPTION A IMPLEMENTATION - WICK STRICTNESS RATIO INCREASED TO 1.5x BODY
     o, c, h, l = float(m15['Open']), float(m15['Close']), float(m15['High']), float(m15['Low'])
     body = abs(o - c) + 1e-9
-    has_bottom_wick = (min(o, c) - l) > (body * 1.2)
-    has_top_wick = (h - max(o, c)) > (body * 1.2)
+    has_bottom_wick = (min(o, c) - l) > (body * 1.5)
+    has_top_wick = (h - max(o, c)) > (body * 1.5)
 
-    # FIXED: Triggers dynamically off early local candle validation inside the structural box
     is_buy = (htf_fvg_type == "BULLISH" and (m15['Low'] <= htf_max + buffer) and (cp > o) and has_bottom_wick)
     is_sell = (htf_fvg_type == "BEARISH" and (m15['High'] >= htf_min - buffer) and (cp < o) and has_top_wick)
 
     if (is_buy or is_sell) and s not in positions:
         side = "BUY" if is_buy else "SELL"
-        
-        # Term trades below S2/S3 (tracked via 33 EMA cross proximity here) as Jackpot setups
         rank = "🔥 JACKPOT" if (side == "BUY" and cp < ema33) or (side == "SELL" and cp > ema33) else "💎 ELITE"
         
         risk = max(atr, cp * 0.003) 
