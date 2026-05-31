@@ -74,20 +74,44 @@ def fetch_data(s, p, i):
     except: return None
 
 def process_symbol(s, positions):
-    # 60-minute High Timeframe for stable structural context
+    # Fetch data arrays
+    df_d = fetch_data(s, "5d", "1d")
     df_htf = fetch_data(s, "10d", "60m")
     df_15 = fetch_data(s, "3d", "15m")
-    if df_htf is None or df_15 is None: return None
+    
+    if df_d is None or df_htf is None or df_15 is None or len(df_d) < 2: return None
+
+    # REFINEMENT 1: STRICT NO-GAP OPEN FILTER
+    # Evaluates the opening price of the current daily session against the prior day's close
+    prev_close = float(df_d['Close'].iloc[-2])
+    today_open = float(df_d['Open'].iloc[-1])
+    if abs(today_open - prev_close) / prev_close > 0.0005:  # Filters out any open gap > 0.05%
+        return None
+
+    # Calculate Woodies Pivots on yesterday's completed daily candle for structural filtering
+    y_high, y_low, y_close = float(df_d['High'].iloc[-2]), float(df_d['Low'].iloc[-2]), float(df_d['Close'].iloc[-2])
+    w_pivot = (y_high + y_low + (2 * y_close)) / 4
+    s2 = w_pivot - (y_high - y_low)
+    s3 = y_low - 2 * (y_high - w_pivot)
+    r2 = w_pivot + (y_high - y_low)
+    r3 = y_high + 2 * (w_pivot - y_low)
 
     htf_fvg_type, htf_min, htf_max = get_fvg(df_htf)
     m15 = df_15.iloc[-1]
-    cp, ema33, atr = float(m15['Close']), float(m15['EMA33']), float(m15['ATR'])
+    cp, atr = float(m15['Close']), float(m15['ATR'])
 
     buffer = atr * 0.1
     
-    # CRITICAL: OPTION A IMPLEMENTATION - WICK STRICTNESS RATIO INCREASED TO 1.5x BODY
+    # REFINEMENT 3: DOJI/CONTRACTION FILTER 
+    # Ensures the candle body represents authentic price expansion, not static compression
     o, c, h, l = float(m15['Open']), float(m15['Close']), float(m15['High']), float(m15['Low'])
+    total_range = (h - l) + 1e-9
     body = abs(o - c) + 1e-9
+    
+    if (body / total_range) < 0.10: # Requires candle body to make up at least 10% of the total range
+        return None
+
+    # WICK STRICTNESS RATIO AT 1.5x BODY
     has_bottom_wick = (min(o, c) - l) > (body * 1.5)
     has_top_wick = (h - max(o, c)) > (body * 1.5)
 
@@ -96,7 +120,11 @@ def process_symbol(s, positions):
 
     if (is_buy or is_sell) and s not in positions:
         side = "BUY" if is_buy else "SELL"
-        rank = "🔥 JACKPOT" if (side == "BUY" and cp < ema33) or (side == "SELL" and cp > ema33) else "💎 ELITE"
+        
+        # REFINEMENT 2: STRUCTURAL WOODIES PIOT "JACKPOT" ALLOCATION
+        is_jackpot_buy = (side == "BUY" and cp < s2)
+        is_jackpot_sell = (side == "SELL" and cp > r2)
+        rank = "🔥 JACKPOT" if (is_jackpot_buy or is_jackpot_sell) else "💎 ELITE"
         
         risk = max(atr, cp * 0.003) 
         targets = [round(cp + (risk * r) if side == "BUY" else cp - (risk * r), 2) for r in [1.5, 3, 5]]
@@ -115,7 +143,7 @@ def manage_exits(positions):
     updated = positions.copy()
     for s, d in positions.items():
         df = fetch_data(s, "1d", "1m")
-        if df is None: continue
+        if df is None or df.empty: continue
         cp = float(df['Close'].iloc[-1])
         side, entry, targets, idx = d['Side'], d['Entry'], d['Targets'], d['T_Idx']
         pts = round(cp - entry if side == "BUY" else entry - cp, 2)
@@ -143,8 +171,13 @@ if __name__ == "__main__":
     with open(POSITIONS_FILE, 'r') as f: pos = json.load(f)
     
     pos = manage_exits(pos)
+    
+    # REFINEMENT 4: THREAD-SAFE CONCURRENT RESULT COMPILATION
     with concurrent.futures.ThreadPoolExecutor(max_workers=10) as executor:
         results = list(executor.map(lambda s: process_symbol(s, pos), SYMBOLS))
+        
+        # Thread-safe dictionary dictionary update executed sequentially on the main thread
         for r in results:
             if r: pos.update(r)
+            
     with open(POSITIONS_FILE, 'w') as f: json.dump(pos, f, indent=4)
