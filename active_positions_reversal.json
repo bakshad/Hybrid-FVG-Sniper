@@ -35,42 +35,6 @@
         "Side": "SELL",
         "Rank": "\ud83d\udc8e ELITE"
     },
-    "TRENT.NS": {
-        "Entry": 4315.60009765625,
-        "Targets": [
-            4494.13,
-            4672.66,
-            4910.7
-        ],
-        "T_Idx": 0,
-        "SL": 4196.58,
-        "Side": "BUY",
-        "Rank": "\ud83d\udc8e ELITE"
-    },
-    "^NSEBANK": {
-        "Entry": 54578.3515625,
-        "Targets": [
-            54332.75,
-            54087.15,
-            53759.68
-        ],
-        "T_Idx": 2,
-        "SL": 54578.3515625,
-        "Side": "SELL",
-        "Rank": "\ud83d\udc8e ELITE"
-    },
-    "APLAPOLLO.NS": {
-        "Entry": 1836.300048828125,
-        "Targets": [
-            1826.08,
-            1815.86,
-            1802.23
-        ],
-        "T_Idx": 2,
-        "SL": 1836.300048828125,
-        "Side": "SELL",
-        "Rank": "\ud83d\udc8e ELITE"
-    },
     "CUMMINSIND.NS": {
         "Entry": 5929.0,
         "Targets": [
@@ -102,20 +66,8 @@
             907.93,
             900.91
         ],
-        "T_Idx": 1,
-        "SL": 918.4500122070312,
-        "Side": "SELL",
-        "Rank": "\ud83d\udc8e ELITE"
-    },
-    "BRITANNIA.NS": {
-        "Entry": 5267.0,
-        "Targets": [
-            5243.3,
-            5219.6,
-            5187.99
-        ],
         "T_Idx": 2,
-        "SL": 5267.0,
+        "SL": 918.4500122070312,
         "Side": "SELL",
         "Rank": "\ud83d\udc8e ELITE"
     },
@@ -126,44 +78,8 @@
             3108.63,
             3083.71
         ],
-        "T_Idx": 1,
+        "T_Idx": 2,
         "SL": 3146.0,
-        "Side": "SELL",
-        "Rank": "\ud83d\udc8e ELITE"
-    },
-    "NAVINFLUOR.NS": {
-        "Entry": 7198.0,
-        "Targets": [
-            7157.55,
-            7117.11,
-            7063.18
-        ],
-        "T_Idx": 2,
-        "SL": 7198.0,
-        "Side": "SELL",
-        "Rank": "\ud83d\udc8e ELITE"
-    },
-    "COCHINSHIP.NS": {
-        "Entry": 1466.5999755859375,
-        "Targets": [
-            1456.5,
-            1446.39,
-            1432.92
-        ],
-        "T_Idx": 2,
-        "SL": 1466.5999755859375,
-        "Side": "SELL",
-        "Rank": "\ud83d\udc8e ELITE"
-    },
-    "COLPAL.NS": {
-        "Entry": 2059.89990234375,
-        "Targets": [
-            2046.3,
-            2032.71,
-            2014.58
-        ],
-        "T_Idx": 2,
-        "SL": 2059.89990234375,
         "Side": "SELL",
         "Rank": "\ud83d\udc8e ELITE"
     },
@@ -186,7 +102,7 @@
             749.43,
             744.18
         ],
-        "T_Idx": 1,
+        "T_Idx": 2,
         "SL": 757.2999877929688,
         "Side": "SELL",
         "Rank": "\ud83d\udc8e ELITE"
@@ -212,6 +128,18 @@
         ],
         "T_Idx": 0,
         "SL": 7143.43,
+        "Side": "SELL",
+        "Rank": "\ud83d\udc8e ELITE"
+    },
+    "PIDILITIND.NS": {
+        "Entry": 1453.5,
+        "Targets": [
+            1445.09,
+            1436.68,
+            1425.46
+        ],
+        "T_Idx": 0,
+        "SL": 1459.11,
         "Side": "SELL",
         "Rank": "\ud83d\udc8e ELITE"
     }
