@@ -1,62 +1,51 @@
-name: 1H-15m Hybrid FVG Sniper
+name: 🏹 1H-15m Hybrid FVG Sniper
 
 on:
   schedule:
     # RUN EVERY 5 MINS DURING NSE HOURS (Mon-Fri)
-    # Using the new 2026 Timezone feature
+    # Automatically triggers from 9:15 AM to 4:00 PM to process live trends, trailing stops, and the final 3:30 PM wrap-up
     - cron: '*/5 9-15 * * 1-5'
       timezone: "Asia/Kolkata"
-    
-    # WEEKLY SUMMARY: Every Friday at 4:30 PM IST
-    - cron: '30 16 * * 5'
-      timezone: "Asia/Kolkata"
   
-  workflow_dispatch: # Manual trigger for testing
+  workflow_dispatch: # Manual trigger for ad-hoc testing
 
 jobs:
   trading_session:
     runs-on: ubuntu-latest
-    # CRITICAL: Gives the bot permission to save trades to your repo
     permissions:
       contents: write
 
     steps:
-      - name: Checkout Code
+      - name: 📥 Checkout Code
         uses: actions/checkout@v4
 
-      - name: Setup Python
+      - name: 🐍 Setup Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-          cache: 'pip' # Speeds up runs
+          cache: 'pip'
 
-      - name: Install Tools
+      - name: 📦 Install Tools
         run: pip install yfinance pandas requests numpy pytz
 
-      - name: Execute Sniper Engine
+      - name: 🚀 Execute Consolidated Sniper Engine
         env:
           TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
-          # Email secrets for the Friday Summary
-          EMAIL_USER: ${{ secrets.EMAIL_USER }}
-          EMAIL_PASS: ${{ secrets.EMAIL_PASS }}
-          EMAIL_RECEIVER: ${{ secrets.EMAIL_RECEIVER }}
-        run: |
-          # Decide whether to run the bot or the summary based on time
-          HOUR=$(date +%H)
-          DAY=$(date +%u)
-          if [ "$DAY" -eq 5 ] && [ "$HOUR" -ge 16 ]; then
-            python weekly_summary.py
-          else
-            python reversal_bot_fno.py
-          fi
+        # The script now dynamically dictates when to manage trades vs when to broadcast the Friday summary natively
+        run: python reversal_bot_fno.py
 
-      - name: Commit & Sync Trade Memory
-        # This step saves your JSON and CSV so the next run knows your active trades
+      - name: 💾 Commit & Sync Trade Memory
         if: always()
         run: |
           git config --global user.name "Sniper-Bot-Automated"
           git config --global user.email "bot@trading.com"
-          git add active_positions_reversal.json trade_performance_log.csv alert_status_reversal.json
-          git commit -m "📊 Sync Market Data [skip ci]" || echo "No changes to sync"
-          git push
+          
+          # Pull latest changes to guarantee a clean merge if branch state changed externally
+          git pull origin main --rebase
+          
+          # CRITICAL: Includes the summary flag file so it persists and prevents message repetition
+          git add active_positions_reversal.json trade_performance_log.csv alert_status_reversal.json summary_sent_*.txt
+          
+          git commit -m "📊 Sync Market Data and Performance Logs [skip ci]" || echo "No changes to sync"
+          git push origin main
