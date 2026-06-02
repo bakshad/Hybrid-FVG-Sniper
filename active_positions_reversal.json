@@ -1,16 +1,4 @@
 {
-    "JSWSTEEL.NS": {
-        "Entry": 1302.0,
-        "Targets": [
-            1295.3,
-            1288.61,
-            1279.68
-        ],
-        "T_Idx": 2,
-        "SL": 1302.0,
-        "Side": "SELL",
-        "Rank": "\ud83d\udc8e ELITE"
-    },
     "MCX.NS": {
         "Entry": 3017.800048828125,
         "Targets": [
@@ -20,18 +8,6 @@
         ],
         "T_Idx": 2,
         "SL": 3017.800048828125,
-        "Side": "SELL",
-        "Rank": "\ud83d\udc8e ELITE"
-    },
-    "IDFCFIRSTB.NS": {
-        "Entry": 71.41999816894531,
-        "Targets": [
-            70.87,
-            70.32,
-            69.59
-        ],
-        "T_Idx": 1,
-        "SL": 71.41999816894531,
         "Side": "SELL",
         "Rank": "\ud83d\udc8e ELITE"
     },
@@ -47,18 +23,6 @@
         "Side": "SELL",
         "Rank": "\ud83d\udc8e ELITE"
     },
-    "KAYNES.NS": {
-        "Entry": 3146.0,
-        "Targets": [
-            3127.31,
-            3108.63,
-            3083.71
-        ],
-        "T_Idx": 2,
-        "SL": 3146.0,
-        "Side": "SELL",
-        "Rank": "\ud83d\udc8e ELITE"
-    },
     "SUNPHARMA.NS": {
         "Entry": 1799.199951171875,
         "Targets": [
@@ -66,8 +30,8 @@
             1775.99,
             1760.52
         ],
-        "T_Idx": 0,
-        "SL": 1806.94,
+        "T_Idx": 1,
+        "SL": 1799.199951171875,
         "Side": "SELL",
         "Rank": "\ud83d\udc8e ELITE"
     },
@@ -78,20 +42,8 @@
             1381.31,
             1368.18
         ],
-        "T_Idx": 0,
-        "SL": 1407.56,
-        "Side": "SELL",
-        "Rank": "\ud83d\udc8e ELITE"
-    },
-    "ABB.NS": {
-        "Entry": 7092.0,
-        "Targets": [
-            7014.86,
-            6937.71,
-            6834.86
-        ],
-        "T_Idx": 0,
-        "SL": 7143.43,
+        "T_Idx": 1,
+        "SL": 1401.0,
         "Side": "SELL",
         "Rank": "\ud83d\udc8e ELITE"
     },
