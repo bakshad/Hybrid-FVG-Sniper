@@ -199,7 +199,7 @@ def manage_exits(positions):
                 with open(LOG_FILE, 'a') as f: f.write(f"{datetime.now(IST)},{s},{side},{d['Rank']},{entry},{cp},{pts},{pct},{qty},{pnl_cash}\n")
                 del updated[s]
         elif (side == "BUY" and cp <= d['SL']) or (side == "SELL" and cp >= d['SL']):
-            send_telegram(f"🛑 SL EXIT TRIGGERED: {s.replace('.NS','')}\nPnL: {pts:+.2f} pts ({pct}%)\n💸 Paper Loss: ₹{pnl_cash:+,2f}")
+            send_telegram(f"🛑 SL EXIT TRIGGERED: {s.replace('.NS','')}\nPnL: {pts:+.2f} pts ({pct}%)\n💸 Paper Loss: ₹{pnl_cash:+,.2f}")
             with open(LOG_FILE, 'a') as f: f.write(f"{datetime.now(IST)},{s},{side},{d['Rank']},{entry},{cp},{pts},{pct},{qty},{pnl_cash}\n")
             del updated[s]
     return updated
