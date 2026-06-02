@@ -192,10 +192,10 @@ def manage_exits(positions):
             if idx < 2:
                 d['T_Idx'] += 1
                 d['SL'] = entry 
-                send_telegram(f"🎯 T{idx+1} HIT: {s.replace('.NS','')}\nCaptured: {pts} pts ({pct}%)\n💰 Running PnL: ₹{pnl_cash:+,2f}\n🛡️ SL trailing to cost.")
+                send_telegram(f"🎯 T{idx+1} HIT: {s.replace('.NS','')}\nCaptured: {pts} pts ({pct}%)\n💰 Running PnL: ₹{pnl_cash:+,.2f}\n🛡️ SL trailing to cost.")
                 updated[s] = d
             else:
-                send_telegram(f"🏁 FINAL TARGET COMPLETED: {s.replace('.NS','')}\nTotal: {pts} pts ({pct}%)\n💸 Paper Profit: ₹{pnl_cash:+,2f}")
+                send_telegram(f"🏁 FINAL TARGET COMPLETED: {s.replace('.NS','')}\nTotal: {pts} pts ({pct}%)\n💸 Paper Profit: ₹{pnl_cash:+,.2f}")
                 with open(LOG_FILE, 'a') as f: f.write(f"{datetime.now(IST)},{s},{side},{d['Rank']},{entry},{cp},{pts},{pct},{qty},{pnl_cash}\n")
                 del updated[s]
         elif (side == "BUY" and cp <= d['SL']) or (side == "SELL" and cp >= d['SL']):
