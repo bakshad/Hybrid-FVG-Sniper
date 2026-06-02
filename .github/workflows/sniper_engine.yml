@@ -61,18 +61,3 @@ jobs:
           else
             echo "No changes or tracking data updates to sync during this window."
           fi
-
-      - name: 💾 Commit & Sync Trade Memory
-        if: always()
-        run: |
-          git config --global user.name "Sniper-Bot-Automated"
-          git config --global user.email "bot@trading.com"
-          
-          # Pull latest changes to guarantee a clean merge if branch state changed externally
-          git pull origin main --rebase
-          
-          # CRITICAL: Includes the summary flag file so it persists and prevents message repetition
-          git add active_positions_reversal.json trade_performance_log.csv alert_status_reversal.json summary_sent_*.txt
-          
-          git commit -m "📊 Sync Market Data and Performance Logs [skip ci]" || echo "No changes to sync"
-          git push origin main
