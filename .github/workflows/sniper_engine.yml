@@ -41,22 +41,24 @@ jobs:
           git config --global user.name "Sniper-Bot-Automated"
           git config --global user.email "bot@trading.com"
           
-          # Pull latest changes to guarantee a clean merge if branch state changed externally
-          git pull origin main --rebase
-          
-          # Stage tracking files individually so a missing file doesn't break the chain
+          # 1. Stage tracking files individually first to clear unstaged changes
           [ -f active_positions_reversal.json ] && git add active_positions_reversal.json
           [ -f trade_performance_log.csv ] && git add trade_performance_log.csv
           [ -f alert_status_reversal.json ] && git add alert_status_reversal.json
           
-          # Safely stage the summary wildcard only if a file exists
+          # Safely stage the summary wildcard only if it exists
           if ls summary_sent_*.txt 1> /dev/null 2>&1; then
             git add summary_sent_*.txt
           fi
           
-          # Only commit and push if there are actual changes staged in the index
+          # 2. Only proceed if the bot actually generated or modified data files
           if ! git diff --cached --quiet; then
             git commit -m "📊 Sync Market Data and Performance Logs [skip ci]"
+            
+            # 3. Pull remote changes after committing to prevent "unstaged changes" blocks
+            git pull origin main --rebase
+            
+            # 4. Push cleanly back to your repository
             git push origin main
           else
             echo "No changes or tracking data updates to sync during this window."
