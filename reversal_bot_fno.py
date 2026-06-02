@@ -98,20 +98,22 @@ def generate_weekly_summary():
         weekly_df['PnL'] = pd.to_numeric(weekly_df['PnL'], errors='coerce').fillna(0)
         total_pnl_cash = round(weekly_df['PnL'].sum(), 2)
         
+        # FIXED: Changed formatting from +,2f to +,.2f
         msg = (f"📊 *WEEKLY PAPER TRADING SUMMARY*\n"
                f"-----------------------------------\n"
                f"🏹 *Closed Positions:* {total_signals}\n"
                f"🎯 *Win Rate:* {win_rate}%\n"
                f"📈 *Net Return:* {net_pct:+.2f}%\n"
-               f"💰 *Total Paper PnL:* ₹{total_pnl_cash:+,2f}\n\n"
+               f"💰 *Total Paper PnL:* ₹{total_pnl_cash:+,.2f}\n\n"
                f"*Asset Performance Breakdown:*")
         
         for _, row in weekly_df.iterrows():
             ticker = row['Symbol'].replace('.NS','')
             sign = "+" if row['Points'] >= 0 else ""
+            # FIXED: Changed formatting from +,2f to +,.2f at the end of the line
             msg += (f"\n• *{ticker}* ({row['Side']}) | Qty: {int(row['Qty'])} "
                     f"\n  In: {row['Entry']:.2f} → Out: {row['Exit']:.2f}"
-                    f"\n  Return: {sign}{row['Pct']:.2f}% (*₹{row['PnL']:+,2f}*)")
+                    f"\n  Return: {sign}{row['Pct']:.2f}% (*₹{row['PnL']:+,.2f}*)")
             
         send_telegram(msg)
     except Exception as e:
@@ -146,9 +148,9 @@ def process_symbol(s, positions):
     body = abs(o - c) + 1e-9
     if (body / total_range) < 0.10: return None
 
-    # 1.5x REJECTION SHADOW RULE
-    has_bottom_wick = (min(o, c) - l) > (body * 1.5)
-    has_top_wick = (h - max(o, c)) > (body * 1.5)
+    # UPDATED: 1.2x REJECTION SHADOW RULE
+    has_bottom_wick = (min(o, c) - l) > (body * 1.2)
+    has_top_wick = (h - max(o, c)) > (body * 1.2)
 
     is_buy = (htf_fvg_type == "BULLISH" and (m15['Low'] <= htf_max + buffer) and (cp > o) and has_bottom_wick)
     is_sell = (htf_fvg_type == "BEARISH" and (m15['High'] >= htf_min - buffer) and (cp < o) and has_top_wick)
