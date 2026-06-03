@@ -23,19 +23,6 @@
         "Side": "SELL",
         "Rank": "\ud83d\udc8e ELITE"
     },
-    "APLAPOLLO.NS": {
-        "Entry": 1756.0,
-        "Targets": [
-            1742.68,
-            1729.36,
-            1711.61
-        ],
-        "T_Idx": 0,
-        "SL": 1764.88,
-        "Side": "SELL",
-        "Rank": "\ud83d\udc8e ELITE",
-        "Qty": 28
-    },
     "ONGC.NS": {
         "Entry": 267.1499938964844,
         "Targets": [
