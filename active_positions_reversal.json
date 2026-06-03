@@ -35,5 +35,18 @@
         "Side": "BUY",
         "Rank": "\ud83d\udc8e ELITE",
         "Qty": 187
+    },
+    "CROMPTON.NS": {
+        "Entry": 273.3500061035156,
+        "Targets": [
+            275.09,
+            276.82,
+            279.14
+        ],
+        "T_Idx": 0,
+        "SL": 272.19,
+        "Side": "BUY",
+        "Rank": "\ud83d\udc8e ELITE",
+        "Qty": 182
     }
 }
