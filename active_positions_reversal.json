@@ -48,5 +48,31 @@
         "Side": "BUY",
         "Rank": "\ud83d\udc8e ELITE",
         "Qty": 182
+    },
+    "JSL.NS": {
+        "Entry": 692.1500244140625,
+        "Targets": [
+            698.94,
+            705.73,
+            714.78
+        ],
+        "T_Idx": 0,
+        "SL": 687.63,
+        "Side": "BUY",
+        "Rank": "\ud83d\udc8e ELITE",
+        "Qty": 72
+    },
+    "NTPC.NS": {
+        "Entry": 368.0,
+        "Targets": [
+            370.1,
+            372.2,
+            375.0
+        ],
+        "T_Idx": 0,
+        "SL": 366.6,
+        "Side": "BUY",
+        "Rank": "\ud83d\udc8e ELITE",
+        "Qty": 135
     }
 }
