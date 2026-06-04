@@ -49,17 +49,17 @@
         "Rank": "\ud83d\udc8e ELITE",
         "Qty": 72
     },
-    "NTPC.NS": {
-        "Entry": 368.0,
+    "CONCOR.NS": {
+        "Entry": 454.54998779296875,
         "Targets": [
-            370.1,
-            372.2,
-            375.0
+            456.63,
+            458.71,
+            461.48
         ],
         "T_Idx": 0,
-        "SL": 366.6,
+        "SL": 453.16,
         "Side": "BUY",
         "Rank": "\ud83d\udc8e ELITE",
-        "Qty": 135
+        "Qty": 109
     }
 }
