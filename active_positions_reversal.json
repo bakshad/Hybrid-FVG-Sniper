@@ -36,19 +36,6 @@
         "Rank": "\ud83d\udc8e ELITE",
         "Qty": 187
     },
-    "CROMPTON.NS": {
-        "Entry": 273.3500061035156,
-        "Targets": [
-            275.09,
-            276.82,
-            279.14
-        ],
-        "T_Idx": 0,
-        "SL": 272.19,
-        "Side": "BUY",
-        "Rank": "\ud83d\udc8e ELITE",
-        "Qty": 182
-    },
     "JSL.NS": {
         "Entry": 692.1500244140625,
         "Targets": [
@@ -56,8 +43,8 @@
             705.73,
             714.78
         ],
-        "T_Idx": 0,
-        "SL": 687.63,
+        "T_Idx": 1,
+        "SL": 692.1500244140625,
         "Side": "BUY",
         "Rank": "\ud83d\udc8e ELITE",
         "Qty": 72
