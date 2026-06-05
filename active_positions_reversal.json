@@ -23,19 +23,6 @@
         "Side": "SELL",
         "Rank": "\ud83d\udc8e ELITE"
     },
-    "ONGC.NS": {
-        "Entry": 267.1499938964844,
-        "Targets": [
-            268.89,
-            270.63,
-            272.95
-        ],
-        "T_Idx": 0,
-        "SL": 265.99,
-        "Side": "BUY",
-        "Rank": "\ud83d\udc8e ELITE",
-        "Qty": 187
-    },
     "JSL.NS": {
         "Entry": 692.1500244140625,
         "Targets": [
@@ -48,18 +35,5 @@
         "Side": "BUY",
         "Rank": "\ud83d\udc8e ELITE",
         "Qty": 72
-    },
-    "CONCOR.NS": {
-        "Entry": 454.54998779296875,
-        "Targets": [
-            456.63,
-            458.71,
-            461.48
-        ],
-        "T_Idx": 0,
-        "SL": 453.16,
-        "Side": "BUY",
-        "Rank": "\ud83d\udc8e ELITE",
-        "Qty": 109
     }
 }
