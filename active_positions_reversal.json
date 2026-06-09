@@ -31,10 +31,23 @@
             307.8,
             310.34
         ],
-        "T_Idx": 0,
-        "SL": 302.73,
+        "T_Idx": 1,
+        "SL": 304.0,
         "Side": "BUY",
         "Rank": "\ud83d\udc8e ELITE",
         "Qty": 164
+    },
+    "HAL.NS": {
+        "Entry": 4270.2001953125,
+        "Targets": [
+            4289.42,
+            4308.63,
+            4334.25
+        ],
+        "T_Idx": 0,
+        "SL": 4257.39,
+        "Side": "BUY",
+        "Rank": "\ud83d\udc8e ELITE",
+        "Qty": 11
     }
 }
