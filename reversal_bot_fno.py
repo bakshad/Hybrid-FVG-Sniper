@@ -7,6 +7,8 @@ import json
 import pytz
 from datetime import datetime
 import concurrent.futures
+from urllib3.util import Retry
+from requests.adapters import HTTPAdapter
 
 # --- CONFIG ---
 TOKEN = os.getenv('TELEGRAM_TOKEN')
@@ -16,7 +18,6 @@ POSITIONS_FILE = "active_positions_reversal.json"
 IST = pytz.timezone('Asia/Kolkata')
 DAILY_TRADE_BUDGET = 50000  # Virtual capital allocation per signal slot
 
-# COMPLETE PRODUCTION F&O UNIVERSE
 SYMBOLS = [
     "360ONE.NS", "ABB.NS", "ABBOTINDIA.NS", "ABCAPITAL.NS", "ABFRL.NS", "ACC.NS", 
     "ADANIENSOL.NS", "ADANIENT.NS", "ADANIGREEN.NS", "ADANIPORTS.NS", "ADANIPOWER.NS", "ALKEM.NS", 
@@ -62,9 +63,20 @@ def get_fvg(df):
 
 def fetch_data(s, p, i):
     try:
-        df = yf.download(s, period=p, interval=i, progress=False)
+        # FIX 1: Auto-expand daily periods to 60d to prevent NaN results in rolling calculations
+        if i == "1d" and p in ["3d", "5d", "10d", "20d"]: 
+            p = "60d"
+            
+        # FIX 2: Create a resilient session with custom User-Agents to prevent GitHub Actions IP blocking
+        session = requests.Session()
+        retry = Retry(total=3, backoff_factor=1, status_forcelist=[429, 500, 502, 503, 504])
+        session.mount('https://', HTTPAdapter(max_retries=retry))
+        session.headers.update({'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/120.0.0.0 Safari/537.36'})
+
+        df = yf.download(s, period=p, interval=i, progress=False, session=session)
         if df.empty: return None
         if isinstance(df.columns, pd.MultiIndex): df.columns = df.columns.get_level_values(0)
+        
         df['EMA33'] = df['Close'].ewm(span=33, adjust=False).mean()
         
         hl = df['High'] - df['Low']
@@ -72,10 +84,11 @@ def fetch_data(s, p, i):
         lcp = abs(df['Low'] - df['Close'].shift())
         df['ATR'] = pd.concat([hl, hcp, lcp], axis=1).max(axis=1).rolling(14).mean()
         return df
-    except: return None
+    except Exception as e: 
+        print(f"Data Fetch Exception for {s}: {e}")
+        return None
 
 def generate_weekly_summary():
-    """Parses historical log file to aggregate virtual cash profit figures."""
     if not os.path.exists(LOG_FILE): return
     try:
         df = pd.read_csv(LOG_FILE)
@@ -94,11 +107,9 @@ def generate_weekly_summary():
         win_rate = round((wins / total_signals) * 100, 2)
         net_pct = round(weekly_df['Pct'].sum(), 2)
         
-        # Coerce values to float to prevent mathematical string errors
         weekly_df['PnL'] = pd.to_numeric(weekly_df['PnL'], errors='coerce').fillna(0)
         total_pnl_cash = round(weekly_df['PnL'].sum(), 2)
         
-        # FIXED: Changed formatting from +,2f to +,.2f
         msg = (f"📊 *WEEKLY PAPER TRADING SUMMARY*\n"
                f"-----------------------------------\n"
                f"🏹 *Closed Positions:* {total_signals}\n"
@@ -110,7 +121,6 @@ def generate_weekly_summary():
         for _, row in weekly_df.iterrows():
             ticker = row['Symbol'].replace('.NS','')
             sign = "+" if row['Points'] >= 0 else ""
-            # FIXED: Changed formatting from +,2f to +,.2f at the end of the line
             msg += (f"\n• *{ticker}* ({row['Side']}) | Qty: {int(row['Qty'])} "
                     f"\n  In: {row['Entry']:.2f} → Out: {row['Exit']:.2f}"
                     f"\n  Return: {sign}{row['Pct']:.2f}% (*₹{row['PnL']:+,.2f}*)")
@@ -120,11 +130,17 @@ def generate_weekly_summary():
         print(f"Summary generation error: {e}")
 
 def process_symbol(s, positions):
+    # FIX 3: Time-of-Day Structural Defense Filters
+    now_time = datetime.now(IST).time()
+    if now_time < datetime.strptime("09:45", "%H:%M").time(): return None
+    if datetime.strptime("11:30", "%H:%M").time() <= now_time <= datetime.strptime("13:15", "%H:%M").time(): return None
+    if now_time > datetime.strptime("14:30", "%H:%M").time(): return None
+
     df_d = fetch_data(s, "5d", "1d")
     df_htf = fetch_data(s, "10d", "60m")
-    df_15 = fetch_data(s, "3d", "15m")
+    df_15 = fetch_data(s, "5d", "15m")
     
-    if df_d is None or df_htf is None or df_15 is None or len(df_d) < 2: return None
+    if df_d is None or df_htf is None or df_15 is None or len(df_d) < 2 or len(df_15) < 15: return None
 
     # STRICT NO-GAP OPEN FILTER
     prev_close = float(df_d['Close'].iloc[-2])
@@ -138,9 +154,14 @@ def process_symbol(s, positions):
     r2 = w_pivot + (y_high - y_low)
 
     htf_fvg_type, htf_min, htf_max = get_fvg(df_htf)
-    m15 = df_15.iloc[-1]
-    cp, atr = float(m15['Close']), float(m15['ATR'])
-    buffer = atr * 0.1
+    
+    # FIX 4: Use the last COMPLETED 15m candle (iloc[-2]) to stop structural repainting
+    m15 = df_15.iloc[-2]
+    cp = float(df_15['Close'].iloc[-1])  # Execute at current live market price
+    
+    # FIX 5: Anchor volatility boundaries using clean Daily ATR values
+    daily_atr = float(df_d['ATR'].iloc[-2])
+    buffer = daily_atr * 0.05
     
     # DOJI/CONTRACTION FILTER 
     o, c, h, l = float(m15['Open']), float(m15['Close']), float(m15['High']), float(m15['Low'])
@@ -148,39 +169,51 @@ def process_symbol(s, positions):
     body = abs(o - c) + 1e-9
     if (body / total_range) < 0.10: return None
 
-    # UPDATED: 1.2x REJECTION SHADOW RULE
+    # REJECTION SHADOW RULE
     has_bottom_wick = (min(o, c) - l) > (body * 1.2)
     has_top_wick = (h - max(o, c)) > (body * 1.2)
 
-    is_buy = (htf_fvg_type == "BULLISH" and (m15['Low'] <= htf_max + buffer) and (cp > o) and has_bottom_wick)
-    is_sell = (htf_fvg_type == "BEARISH" and (m15['High'] >= htf_min - buffer) and (cp < o) and has_top_wick)
+    # FIX 6: Institutional Volume Confirmation Check
+    df_15['Vol_SMA'] = df_15['Volume'].rolling(10).mean()
+    volume_confirmed = float(m15['Volume']) > float(df_15['Vol_SMA'].iloc[-2])
+
+    # FIX 7: Trend Filter Alignment Engine via HTF EMA33
+    htf_cp = float(df_htf['Close'].iloc[-1])
+    htf_ema = float(df_htf['EMA33'].iloc[-1])
+    trend_bullish = htf_cp > htf_ema
+    trend_bearish = htf_cp < htf_ema
+
+    is_buy = (htf_fvg_type == "BULLISH" and (l <= htf_max + buffer) and (c > o) and has_bottom_wick and trend_bullish and volume_confirmed)
+    is_sell = (htf_fvg_type == "BEARISH" and (h >= htf_min - buffer) and (c < o) and has_top_wick and trend_bearish and volume_confirmed)
 
     if (is_buy or is_sell) and s not in positions:
         side = "BUY" if is_buy else "SELL"
         rank = "🔥 JACKPOT" if (side == "BUY" and cp < s2) or (side == "SELL" and cp > r2) else "💎 ELITE"
         
-        # VIRTUAL PAPER POSITION SIZING CAP ENGINE
         qty = int(DAILY_TRADE_BUDGET // cp)
-        if qty == 0: return None  # Prevents executing ultra-expensive equities beyond buffer limits
+        if qty == 0: return None  
         
-        risk = max(atr, cp * 0.003) 
+        # FIX 8: Decompressed risk anchor utilizing 22% of daily volatility to absorb midday noise
+        risk = max(daily_atr * 0.22, cp * 0.006) 
         targets = [round(cp + (risk * r) if side == "BUY" else cp - (risk * r), 2) for r in [1.5, 3, 5]]
         sl = round(cp - risk if side == "BUY" else cp + risk, 2)
 
         msg = (f"{rank}: {s.replace('.NS','')}\n"
                f"---------------------------\n"
-               f"📍 HTF: 60m {htf_fvg_type} FVG\n"
+               f"📍 HTF: 60m {htf_fvg_type} FVG | Trend Aligned\n"
+               f"📊 Vol: Confirmed | Time: {now_time.strftime('%H:%M')}\n"
                f"🚀 PAPER {side} @ ₹{cp:.2f}\n"
-               f"📦 Qty: {qty} shares (Allocated: ₹{qty*cp:,.2f})\n"
+               f"📦 Qty: {qty} shares\n"
                f"🎯 T1: ₹{targets[0]} | SL: ₹{sl:.2f}")
         send_telegram(msg)
-        return {s: {"Entry": cp, "Targets": targets, "T_Idx": 0, "SL": sl, "Side": side, "Rank": rank, "Qty": qty}}
+        return {s: {"Entry": cp, "Targets": targets, "T_Idx": 0, "SL": sl, "Side": side, "Rank": rank, "Qty": qty, "Initial_Risk": risk}}
     return None
 
 def manage_exits(positions):
     updated = positions.copy()
     for s, d in positions.items():
-        df = fetch_data(s, "1d", "1m")
+        # FIX 9: Track exit pricing on a stable 5m chart to avoid 1m noise/spread spikes
+        df = fetch_data(s, "1d", "5m")
         if df is None or df.empty: continue
         cp = float(df['Close'].iloc[-1])
         side, entry, targets, idx = d['Side'], d['Entry'], d['Targets'], d['T_Idx']
@@ -193,8 +226,9 @@ def manage_exits(positions):
         if (side == "BUY" and cp >= targets[idx]) or (side == "SELL" and cp <= targets[idx]):
             if idx < 2:
                 d['T_Idx'] += 1
-                d['SL'] = entry 
-                send_telegram(f"🎯 T{idx+1} HIT: {s.replace('.NS','')}\nCaptured: {pts} pts ({pct}%)\n💰 Running PnL: ₹{pnl_cash:+,.2f}\n🛡️ SL trailing to cost.")
+                # FIX 10: Trail to a defensive structural layer instead of snapping hard to breakeven
+                d['SL'] = round(entry * 1.001 if side == "BUY" else entry * 0.999, 2)
+                send_telegram(f"🎯 T{idx+1} HIT: {s.replace('.NS','')}\nCaptured: {pts} pts ({pct}%)\n🛡️ SL trailing to cost layer.")
                 updated[s] = d
             else:
                 send_telegram(f"🏁 FINAL TARGET COMPLETED: {s.replace('.NS','')}\nTotal: {pts} pts ({pct}%)\n💸 Paper Profit: ₹{pnl_cash:+,.2f}")
@@ -207,7 +241,6 @@ def manage_exits(positions):
     return updated
 
 if __name__ == "__main__":
-    # Synchronize performance CSV structure mapping
     if not os.path.exists(LOG_FILE):
         with open(LOG_FILE, 'w') as f: 
             f.write("Timestamp,Symbol,Side,Rank,Entry,Exit,Points,Pct,Qty,PnL\n")
@@ -226,7 +259,6 @@ if __name__ == "__main__":
             
     with open(POSITIONS_FILE, 'w') as f: json.dump(pos, f, indent=4)
 
-    # FRIDAY POST-MARKET SNAP SUMMARY TRIGGER
     now = datetime.now(IST)
     if now.weekday() == 4 and (now.hour > 15 or (now.hour == 15 and now.minute >= 30)):
         flag_file = f"summary_sent_{now.strftime('%Y_%U')}.txt"
