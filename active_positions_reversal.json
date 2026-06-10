@@ -11,32 +11,6 @@
         "Side": "SELL",
         "Rank": "\ud83d\udc8e ELITE"
     },
-    "LICHSGFIN.NS": {
-        "Entry": 548.6500244140625,
-        "Targets": [
-            553.68,
-            558.7,
-            565.4
-        ],
-        "T_Idx": 0,
-        "SL": 545.3,
-        "Side": "BUY",
-        "Rank": "\ud83d\udc8e ELITE",
-        "Qty": 91
-    },
-    "HAL.NS": {
-        "Entry": 4270.2001953125,
-        "Targets": [
-            4289.42,
-            4308.63,
-            4334.25
-        ],
-        "T_Idx": 0,
-        "SL": 4257.39,
-        "Side": "BUY",
-        "Rank": "\ud83d\udc8e ELITE",
-        "Qty": 11
-    },
     "INDUSINDBK.NS": {
         "Entry": 911.0999755859375,
         "Targets": [
@@ -44,7 +18,7 @@
             896.75,
             887.19
         ],
-        "T_Idx": 1,
+        "T_Idx": 2,
         "SL": 911.0999755859375,
         "Side": "SELL",
         "Rank": "\ud83d\udc8e ELITE",
@@ -70,8 +44,8 @@
             1639.74,
             1629.77
         ],
-        "T_Idx": 0,
-        "SL": 1659.69,
+        "T_Idx": 1,
+        "SL": 1654.699951171875,
         "Side": "SELL",
         "Rank": "\ud83d\udc8e ELITE",
         "Qty": 30
