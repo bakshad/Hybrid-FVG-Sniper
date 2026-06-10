@@ -11,32 +11,6 @@
         "Side": "SELL",
         "Rank": "\ud83d\udc8e ELITE"
     },
-    "INDUSINDBK.NS": {
-        "Entry": 911.0999755859375,
-        "Targets": [
-            903.93,
-            896.75,
-            887.19
-        ],
-        "T_Idx": 2,
-        "SL": 911.0999755859375,
-        "Side": "SELL",
-        "Rank": "\ud83d\udc8e ELITE",
-        "Qty": 54
-    },
-    "ITC.NS": {
-        "Entry": 283.3500061035156,
-        "Targets": [
-            284.86,
-            286.37,
-            288.39
-        ],
-        "T_Idx": 1,
-        "SL": 283.3500061035156,
-        "Side": "BUY",
-        "Rank": "\ud83d\udc8e ELITE",
-        "Qty": 176
-    },
     "DALBHARAT.NS": {
         "Entry": 1654.699951171875,
         "Targets": [
@@ -44,10 +18,36 @@
             1639.74,
             1629.77
         ],
-        "T_Idx": 1,
+        "T_Idx": 2,
         "SL": 1654.699951171875,
         "Side": "SELL",
         "Rank": "\ud83d\udc8e ELITE",
         "Qty": 30
+    },
+    "CANBK.NS": {
+        "Entry": 133.35000610351562,
+        "Targets": [
+            132.5,
+            131.65,
+            130.52
+        ],
+        "T_Idx": 0,
+        "SL": 133.92,
+        "Side": "SELL",
+        "Rank": "\ud83d\udc8e ELITE",
+        "Qty": 374
+    },
+    "SAIL.NS": {
+        "Entry": 181.72000122070312,
+        "Targets": [
+            180.72,
+            179.72,
+            178.39
+        ],
+        "T_Idx": 0,
+        "SL": 182.39,
+        "Side": "SELL",
+        "Rank": "\ud83d\udc8e ELITE",
+        "Qty": 275
     }
 }
