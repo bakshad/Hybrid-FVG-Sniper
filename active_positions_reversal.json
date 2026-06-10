@@ -37,19 +37,6 @@
         "Rank": "\ud83d\udc8e ELITE",
         "Qty": 11
     },
-    "ABBOTINDIA.NS": {
-        "Entry": 26625.0,
-        "Targets": [
-            26855.36,
-            27085.71,
-            27392.86
-        ],
-        "T_Idx": 0,
-        "SL": 26471.43,
-        "Side": "BUY",
-        "Rank": "\ud83d\udc8e ELITE",
-        "Qty": 1
-    },
     "INDUSINDBK.NS": {
         "Entry": 911.0999755859375,
         "Targets": [
