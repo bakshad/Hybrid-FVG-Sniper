@@ -373,6 +373,11 @@ class StructureEngine:
                 )
             )
 
+        print(
+            f"MSS={mss} "
+            f"Trigger={trigger}"
+        )
+            
         if not mss:
             return None
 
