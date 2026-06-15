@@ -194,6 +194,8 @@ def scan_signals(
 
     active_symbols = set()
 
+    print(f"Scanning {symbol}")
+
     if len(active_positions) > 0:
 
         active_symbols = set(
@@ -249,6 +251,11 @@ def scan_signals(
             )
 
             if not fvg:
+
+                print(
+                    f"{symbol}: No FVG"
+                )
+
                 continue
 
             # ----------------------------------
@@ -300,6 +307,11 @@ def scan_signals(
             )
 
             if not structure:
+
+                print(
+                    f"{symbol}: Structure Failed"
+                )
+
                 continue
 
             # ----------------------------------
@@ -315,10 +327,20 @@ def scan_signals(
                 )
             )
 
-            if (
-                signal["Score"]
-                < MIN_SCORE
-            ):
+            print(
+                f"{symbol}: "
+                f"Score={signal['Score']} "
+                f"Grade={signal['Grade']}"
+            )
+            
+            if signal["Score"] < MIN_SCORE:
+
+                print(
+                    f"{symbol}: "
+                    f"Rejected Score "
+                    f"{signal['Score']}"
+                )
+
                 continue
 
             # ----------------------------------
