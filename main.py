@@ -194,8 +194,6 @@ def scan_signals(
 
     active_symbols = set()
 
-    print(f"Scanning {symbol}")
-
     if len(active_positions) > 0:
 
         active_symbols = set(
@@ -206,11 +204,9 @@ def scan_signals(
 
     for symbol in symbols:
 
-        try:
+        print(f"Scanning {symbol}")
 
-            # ----------------------------------
-            # Skip Existing Trades
-            # ----------------------------------
+        try:
 
             if symbol in active_symbols:
                 continue
