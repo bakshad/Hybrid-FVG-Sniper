@@ -135,34 +135,44 @@ class DataProvider:
     # =========================
 
     def _clean_df(
-        self,
-        df
+    self,
+    df
     ):
 
-        if df is None:
-            return pd.DataFrame()
+    if df is None:
+        return pd.DataFrame()
 
-        if len(df) == 0:
-            return pd.DataFrame()
+    if len(df) == 0:
+        return pd.DataFrame()
 
-        df = df.copy()
+    df = df.copy()
 
-        df.dropna(
-            inplace=True
+    if isinstance(
+        df.columns,
+        pd.MultiIndex
+    ):
+
+        df.columns = (
+            df.columns
+            .get_level_values(0)
         )
 
-        cols = [
-            "Open",
-            "High",
-            "Low",
-            "Close",
-            "Volume"
-        ]
+    df.dropna(
+        inplace=True
+    )
 
-        for col in cols:
+    cols = [
+        "Open",
+        "High",
+        "Low",
+        "Close",
+        "Volume"
+    ]
 
-            if col not in df.columns:
+    for col in cols:
 
-                return pd.DataFrame()
+        if col not in df.columns:
 
-        return df
+            return pd.DataFrame()
+
+    return df
