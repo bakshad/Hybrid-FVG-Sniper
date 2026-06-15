@@ -37,9 +37,9 @@ SELL_ENABLED = True
 # Target Management
 # =========================
 
-T1_R = 1.5
+T1_R = 2.0
 
-T2_R = 3.0
+T2_R = 4.0
 
 T1_EXIT_PCT = 0.40
 
