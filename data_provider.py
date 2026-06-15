@@ -133,48 +133,48 @@ class DataProvider:
     # =========================
     # Cleanup
     # =========================
-def _clean_df(
-    self,
-    df
-):
 
-    if df is None:
-        return pd.DataFrame()
-
-    if len(df) == 0:
-        return pd.DataFrame()
-
-    df = df.copy()
-
-    # Fix yfinance MultiIndex columns
-
-    if isinstance(
-        df.columns,
-        pd.MultiIndex
+    def _clean_df(
+        self,
+        df
     ):
 
-        df.columns = (
-            df.columns
-            .get_level_values(0)
-        )
-
-    df.dropna(
-        inplace=True
-    )
-
-    cols = [
-        "Open",
-        "High",
-        "Low",
-        "Close",
-        "Volume"
-    ]
-
-    for col in cols:
-
-        if col not in df.columns:
-
+        if df is None:
             return pd.DataFrame()
 
-    return df
-    
+        if len(df) == 0:
+            return pd.DataFrame()
+
+        df = df.copy()
+
+        # Fix yfinance MultiIndex columns
+
+        if isinstance(
+            df.columns,
+            pd.MultiIndex
+        ):
+
+            df.columns = (
+                df.columns
+                .get_level_values(0)
+            )
+
+        df.dropna(
+            inplace=True
+        )
+
+        cols = [
+            "Open",
+            "High",
+            "Low",
+            "Close",
+            "Volume"
+        ]
+
+        for col in cols:
+
+            if col not in df.columns:
+
+                return pd.DataFrame()
+
+        return df
