@@ -398,3 +398,410 @@ class TradeManager:
             ) * qty
 
         return round(pnl, 2)
+    # ==================================================
+    # T1 Processing
+    # ==================================================
+
+    def process_t1(
+        self,
+        position,
+        current_price
+    ):
+
+        if position["T1Hit"]:
+            return None
+
+        if position["Side"] == "BUY":
+
+            hit = (
+                current_price
+                >=
+                position["T1"]
+            )
+
+        else:
+
+            hit = (
+                current_price
+                <=
+                position["T1"]
+            )
+
+        if not hit:
+            return None
+
+        qty = int(
+            position["T1Qty"]
+        )
+
+        pnl = self.calculate_pnl(
+            position["Side"],
+            float(position["Entry"]),
+            current_price,
+            qty
+        )
+
+        position["RemainingQty"] -= qty
+
+        position["RealizedPnL"] += pnl
+
+        position["T1Hit"] = True
+
+        # Move stop to breakeven
+
+        position["SL"] = position["Entry"]
+
+        position["LastUpdateTime"] = str(
+            datetime.now()
+        )
+
+        return "T1_HIT"
+
+    # ==================================================
+    # T2 Processing
+    # ==================================================
+
+    def process_t2(
+        self,
+        position,
+        current_price
+    ):
+
+        if position["T2Hit"]:
+            return None
+
+        if not position["T1Hit"]:
+            return None
+
+        if position["Side"] == "BUY":
+
+            hit = (
+                current_price
+                >=
+                position["T2"]
+            )
+
+        else:
+
+            hit = (
+                current_price
+                <=
+                position["T2"]
+            )
+
+        if not hit:
+            return None
+
+        qty = int(
+            position["T2Qty"]
+        )
+
+        pnl = self.calculate_pnl(
+            position["Side"],
+            float(position["Entry"]),
+            current_price,
+            qty
+        )
+
+        position["RemainingQty"] -= qty
+
+        position["RealizedPnL"] += pnl
+
+        position["T2Hit"] = True
+
+        # Move stop to T1
+
+        position["SL"] = position["T1"]
+
+        position["LastUpdateTime"] = str(
+            datetime.now()
+        )
+
+        return "T2_HIT"
+
+    # ==================================================
+    # Update High / Low
+    # ==================================================
+
+    def update_price_tracking(
+        self,
+        position,
+        current_price
+    ):
+
+        position["HighestPrice"] = max(
+            float(position["HighestPrice"]),
+            current_price
+        )
+
+        position["LowestPrice"] = min(
+            float(position["LowestPrice"]),
+            current_price
+        )
+
+    # ==================================================
+    # Update Chandelier
+    # ==================================================
+
+    def update_chandelier(
+        self,
+        position,
+        df_daily
+    ):
+
+        if position["Side"] == "BUY":
+
+            new_stop = (
+                self.calculate_chandelier_long(
+                    df_daily
+                )
+            )
+
+            position["ChandelierStop"] = max(
+                float(
+                    position["ChandelierStop"]
+                ),
+                new_stop
+            )
+
+        else:
+
+            new_stop = (
+                self.calculate_chandelier_short(
+                    df_daily
+                )
+            )
+
+            position["ChandelierStop"] = min(
+                float(
+                    position["ChandelierStop"]
+                ),
+                new_stop
+            )
+
+        position["LastUpdateTime"] = str(
+            datetime.now()
+        )
+
+    # ==================================================
+    # Exit Detection
+    # ==================================================
+
+    def check_exit(
+        self,
+        position,
+        current_price
+    ):
+
+        side = position["Side"]
+
+        sl = float(
+            position["SL"]
+        )
+
+        chandelier = float(
+            position["ChandelierStop"]
+        )
+
+        # ------------------
+        # BUY
+        # ------------------
+
+        if side == "BUY":
+
+            if current_price <= sl:
+
+                return "STOP_EXIT"
+
+            if (
+                position["T2Hit"]
+                and
+                current_price <= chandelier
+            ):
+
+                return "RUNNER_EXIT"
+
+        # ------------------
+        # SELL
+        # ------------------
+
+        else:
+
+            if current_price >= sl:
+
+                return "STOP_EXIT"
+
+            if (
+                position["T2Hit"]
+                and
+                current_price >= chandelier
+            ):
+
+                return "RUNNER_EXIT"
+
+        return None
+
+    # ==================================================
+    # R Multiple
+    # ==================================================
+
+    @staticmethod
+    def calculate_r_multiple(
+        pnl,
+        position
+    ):
+
+        risk = (
+            float(
+                position["InitialRisk"]
+            )
+            *
+            int(
+                position["Qty"]
+            )
+        )
+
+        if risk <= 0:
+            return 0
+
+        return round(
+            pnl / risk,
+            2
+        )
+
+    # ==================================================
+    # Days Held
+    # ==================================================
+
+    @staticmethod
+    def calculate_days_held(
+        position
+    ):
+
+        try:
+
+            entry_time = datetime.fromisoformat(
+                str(
+                    position["EntryTime"]
+                )
+            )
+
+            days = (
+                datetime.now()
+                -
+                entry_time
+            ).days
+
+            return max(days, 0)
+
+        except:
+
+            return 0
+
+    # ==================================================
+    # Close Position
+    # ==================================================
+
+    def close_position(
+        self,
+        position,
+        current_price,
+        reason
+    ):
+
+        remaining_qty = int(
+            position["RemainingQty"]
+        )
+
+        remaining_pnl = self.calculate_pnl(
+            position["Side"],
+            float(position["Entry"]),
+            current_price,
+            remaining_qty
+        )
+
+        total_pnl = round(
+            float(
+                position["RealizedPnL"]
+            )
+            +
+            remaining_pnl,
+            2
+        )
+
+        r_multiple = (
+            self.calculate_r_multiple(
+                total_pnl,
+                position
+            )
+        )
+
+        days_held = (
+            self.calculate_days_held(
+                position
+            )
+        )
+
+        pnl_pct = round(
+            (
+                total_pnl
+                /
+                float(
+                    position["EntryCapital"]
+                )
+            )
+            * 100,
+            2
+        )
+
+        trade_record = {
+
+            "EntryTime":
+                position["EntryTime"],
+
+            "ExitTime":
+                str(
+                    datetime.now()
+                ),
+
+            "Symbol":
+                position["Symbol"],
+
+            "Side":
+                position["Side"],
+
+            "Score":
+                position["Score"],
+
+            "Grade":
+                position["Grade"],
+
+            "Entry":
+                position["Entry"],
+
+            "Exit":
+                round(
+                    current_price,
+                    2
+                ),
+
+            "Qty":
+                position["Qty"],
+
+            "PnL":
+                total_pnl,
+
+            "PnLPct":
+                pnl_pct,
+
+            "RMultiple":
+                r_multiple,
+
+            "DaysHeld":
+                days_held,
+
+            "ExitReason":
+                reason
+        }
+
+        return trade_record
