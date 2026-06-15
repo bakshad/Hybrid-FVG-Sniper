@@ -1,5 +1,10 @@
 """
 fvg_engine.py
+
+Institutional Fair Value Gap Engine
+
+Score Range:
+    0 - 60
 """
 
 import pandas as pd
@@ -14,6 +19,10 @@ from config import (
 
 
 class FVGEngine:
+
+    # =========================
+    # ATR
+    # =========================
 
     def calculate_atr(
         self,
@@ -44,17 +53,91 @@ class FVGEngine:
 
         return tr.rolling(period).mean()
 
-    def volume_ratio(
+    # =========================
+    # Volume Ratio
+    # =========================
+
+    def calculate_volume_ratio(
         self,
         df
     ):
 
-        return (
-            df["Volume"] /
+        volume_ma = (
             df["Volume"]
             .rolling(20)
             .mean()
         )
+
+        return (
+            df["Volume"] /
+            volume_ma
+        )
+
+    # =========================
+    # FVG Scoring
+    # =========================
+
+    def score_fvg(
+        self,
+        gap_atr,
+        volume_ratio,
+        body_ratio
+    ):
+        """
+        Maximum:
+            60
+        """
+
+        score = 0
+
+        score += min(
+            gap_atr * 20,
+            20
+        )
+
+        score += min(
+            volume_ratio * 10,
+            20
+        )
+
+        score += min(
+            body_ratio * 20,
+            20
+        )
+
+        return round(score, 2)
+
+    # =========================
+    # Active FVG Check
+    # =========================
+
+    def is_active_fvg(
+        self,
+        current_price,
+        atr,
+        fvg_low,
+        fvg_high
+    ):
+
+        # Inside FVG
+
+        if (
+            fvg_low <= current_price <= fvg_high
+        ):
+            return True
+
+        # Near FVG
+
+        distance = min(
+            abs(current_price - fvg_low),
+            abs(current_price - fvg_high)
+        )
+
+        return distance <= (atr * 2)
+
+    # =========================
+    # Scan FVGs
+    # =========================
 
     def scan_fvgs(
         self,
@@ -66,10 +149,18 @@ class FVGEngine:
 
         df = df.copy()
 
-        df["ATR"] = self.calculate_atr(df)
+        df["ATR"] = (
+            self.calculate_atr(df)
+        )
 
         df["VolumeRatio"] = (
-            self.volume_ratio(df)
+            self.calculate_volume_ratio(df)
+        )
+
+        current_price = (
+            float(
+                df["Close"].iloc[-1]
+            )
         )
 
         results = []
@@ -81,21 +172,23 @@ class FVGEngine:
 
         for i in range(
             start,
-            len(df) - 1
+            len(df)
         ):
 
             c1 = df.iloc[i - 2]
             c2 = df.iloc[i - 1]
             c3 = df.iloc[i]
 
-            atr = c2["ATR"]
+            atr = float(c2["ATR"])
 
-            if pd.isna(atr):
+            if np.isnan(atr):
                 continue
 
             candle_range = max(
-                c2["High"] -
-                c2["Low"],
+                (
+                    c2["High"] -
+                    c2["Low"]
+                ),
                 0.01
             )
 
@@ -109,13 +202,13 @@ class FVGEngine:
                 candle_range
             )
 
-            volume_ratio = (
+            volume_ratio = float(
                 c2["VolumeRatio"]
             )
 
-            # ------------------
+            # ---------------------
             # Bullish FVG
-            # ------------------
+            # ---------------------
 
             if c1["High"] < c3["Low"]:
 
@@ -137,10 +230,28 @@ class FVGEngine:
                     body_ratio >= MIN_DISPLACEMENT
                 ):
 
-                    score = self.score_fvg(
-                        gap_atr,
-                        volume_ratio,
-                        body_ratio
+                    fvg_low = float(
+                        c1["High"]
+                    )
+
+                    fvg_high = float(
+                        c3["Low"]
+                    )
+
+                    if not self.is_active_fvg(
+                        current_price,
+                        atr,
+                        fvg_low,
+                        fvg_high
+                    ):
+                        continue
+
+                    score = (
+                        self.score_fvg(
+                            gap_atr,
+                            volume_ratio,
+                            body_ratio
+                        )
                     )
 
                     results.append({
@@ -170,19 +281,21 @@ class FVGEngine:
                             ),
 
                         "fvg_low":
-                            float(
-                                c1["High"]
+                            round(
+                                fvg_low,
+                                2
                             ),
 
                         "fvg_high":
-                            float(
-                                c3["Low"]
+                            round(
+                                fvg_high,
+                                2
                             )
                     })
 
-            # ------------------
+            # ---------------------
             # Bearish FVG
-            # ------------------
+            # ---------------------
 
             if c1["Low"] > c3["High"]:
 
@@ -204,10 +317,28 @@ class FVGEngine:
                     body_ratio >= MIN_DISPLACEMENT
                 ):
 
-                    score = self.score_fvg(
-                        gap_atr,
-                        volume_ratio,
-                        body_ratio
+                    fvg_low = float(
+                        c3["High"]
+                    )
+
+                    fvg_high = float(
+                        c1["Low"]
+                    )
+
+                    if not self.is_active_fvg(
+                        current_price,
+                        atr,
+                        fvg_low,
+                        fvg_high
+                    ):
+                        continue
+
+                    score = (
+                        self.score_fvg(
+                            gap_atr,
+                            volume_ratio,
+                            body_ratio
+                        )
                     )
 
                     results.append({
@@ -237,43 +368,23 @@ class FVGEngine:
                             ),
 
                         "fvg_low":
-                            float(
-                                c3["High"]
+                            round(
+                                fvg_low,
+                                2
                             ),
 
                         "fvg_high":
-                            float(
-                                c1["Low"]
+                            round(
+                                fvg_high,
+                                2
                             )
                     })
 
         return results
 
-    def score_fvg(
-        self,
-        gap_atr,
-        volume_ratio,
-        body_ratio
-    ):
-
-        score = 0
-
-        score += min(
-            gap_atr * 20,
-            20
-        )
-
-        score += min(
-            volume_ratio * 10,
-            20
-        )
-
-        score += min(
-            body_ratio * 20,
-            20
-        )
-
-        return round(score, 2)
+    # =========================
+    # Best FVG
+    # =========================
 
     def get_best_fvg(
         self,
