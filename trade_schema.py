@@ -26,7 +26,15 @@ ACTIVE_COLUMNS = [
 
     "RemainingQty",
 
+    "T1Qty",
+
+    "T2Qty",
+
+    "RunnerQty",
+
     "RealizedPnL",
+
+    "EntryCapital",
 
     "Score",
 
@@ -50,9 +58,10 @@ ACTIVE_COLUMNS = [
 
     "EntryTime",
 
+    "LastUpdateTime",
+
     "Status"
 ]
-
 
 HISTORY_COLUMNS = [
 
