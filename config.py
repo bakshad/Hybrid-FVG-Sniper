@@ -27,7 +27,7 @@ MAX_HOLD_DAYS = 60
 # Trade Qualification
 # =========================
 
-MIN_SCORE = 85
+MIN_SCORE = 70
 
 BUY_ENABLED = True
 
@@ -53,7 +53,7 @@ RUNNER_EXIT_PCT = 0.30
 
 MIN_FVG_ATR = 0.20
 
-MIN_VOLUME_RATIO = 1.5
+MIN_VOLUME_RATIO = 1.2
 
 MIN_DISPLACEMENT = 0.55
 
