@@ -133,11 +133,10 @@ class DataProvider:
     # =========================
     # Cleanup
     # =========================
-
-    def _clean_df(
+def _clean_df(
     self,
     df
-    ):
+):
 
     if df is None:
         return pd.DataFrame()
@@ -146,6 +145,8 @@ class DataProvider:
         return pd.DataFrame()
 
     df = df.copy()
+
+    # Fix yfinance MultiIndex columns
 
     if isinstance(
         df.columns,
@@ -176,3 +177,4 @@ class DataProvider:
             return pd.DataFrame()
 
     return df
+    
