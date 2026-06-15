@@ -133,7 +133,7 @@ class FVGEngine:
             abs(current_price - fvg_high)
         )
 
-        return distance <= (atr * 2)
+        return distance <= (atr * 5)
 
     # =========================
     # Scan FVGs
