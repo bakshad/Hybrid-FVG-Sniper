@@ -4,7 +4,8 @@ import pandas as pd
 from config import (
     ACTIVE_POSITIONS_FILE,
     TRADE_HISTORY_FILE,
-    SIGNAL_DATASET_FILE
+    SIGNAL_DATASET_FILE,
+    FNO_LIST_FILE
 )
 
 
@@ -216,4 +217,48 @@ def append_signal_dataset(record):
     df.to_csv(
         SIGNAL_DATASET_FILE,
         index=False
+    )
+
+def get_current_capital(
+    starting_capital
+):
+
+    initialize_storage()
+
+    df = pd.read_csv(
+        TRADE_HISTORY_FILE
+    )
+
+    if len(df) == 0:
+
+        return starting_capital
+
+    total_pnl = (
+        pd.to_numeric(
+            df["PnL"],
+            errors="coerce"
+        )
+        .fillna(0)
+        .sum()
+    )
+
+    return round(
+        starting_capital + total_pnl,
+        2
+    )
+
+
+def load_fno_symbols():
+
+    df = pd.read_csv(
+        FNO_LIST_FILE
+    )
+
+    first_col = df.columns[0]
+
+    return (
+        df[first_col]
+        .dropna()
+        .astype(str)
+        .tolist()
     )
