@@ -133,44 +133,44 @@ class StructureEngine:
     # =========================
 
     def bullish_mss(
-    self,
-    df_60m
-):
+        self,
+        df_60m
+    ):
 
-    recent_close = (
-        df_60m["Close"]
-        .iloc[-2]
-    )
+        recent_close = (
+            df_60m["Close"]
+            .iloc[-2]
+        )
 
-    previous_high = (
-        df_60m["High"]
-        .iloc[-5:-2]
-        .max()
-    )
+        previous_high = (
+            df_60m["High"]
+            .iloc[-5:-2]
+            .max()
+        )
 
-    return recent_close > previous_high
+        return recent_close > previous_high
 
     # =========================
     # Bearish MSS
     # =========================
 
     def bearish_mss(
-    self,
-    df_60m
-):
+        self,
+        df_60m
+    ):
 
-    recent_close = (
-        df_60m["Close"]
-        .iloc[-2]
-    )
+        recent_close = (
+            df_60m["Close"]
+            .iloc[-2]
+        )
 
-    previous_low = (
-        df_60m["Low"]
-        .iloc[-5:-2]
-        .min()
-    )
+        previous_low = (
+            df_60m["Low"]
+            .iloc[-5:-2]
+            .min()
+        )
 
-    return recent_close < previous_low
+        return recent_close < previous_low
 
     # =========================
     # Bullish Trigger
