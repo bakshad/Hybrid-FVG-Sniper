@@ -27,6 +27,8 @@ class ScoreEngine:
     JACKPOT = 90
     ELITE = 85
     A_PLUS = 80
+    A = 75
+    B = 70
 
     # =========================
     # Final Score
@@ -56,19 +58,25 @@ class ScoreEngine:
 
     @staticmethod
     def get_grade(score):
-
-        if score >= ScoreEngine.MONSTER:
+    
+        if score >= 95:
             return "MONSTER"
-
-        if score >= ScoreEngine.JACKPOT:
+    
+        if score >= 90:
             return "JACKPOT"
-
-        if score >= ScoreEngine.ELITE:
+    
+        if score >= 85:
             return "ELITE"
-
-        if score >= ScoreEngine.A_PLUS:
+    
+        if score >= 80:
             return "A+"
-
+    
+        if score >= 75:
+            return "A"
+    
+        if score >= 70:
+            return "B"
+    
         return "IGNORE"
 
     # =========================
