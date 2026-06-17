@@ -178,7 +178,7 @@ class TradeManager:
         capital
     ):
 
-        buffer = atr * 0.10
+        buffer = atr * 0.50
 
         # ------------------
         # Structure Stop
