@@ -14,137 +14,137 @@ import pandas as pd
 
 class StructureEngine:
 
-   # =========================
-# Bullish Sweep
-# =========================
+    # =========================
+    # Bullish Sweep
+    # =========================
 
-def detect_bullish_sweep(
-    self,
-    df_60m
-):
-
-    if len(df_60m) < 25:
-        return None
-
-    trigger = df_60m.iloc[-2]
-
-    confirm = df_60m.iloc[-1]
-
-    previous_lows = (
-        df_60m["Low"]
-        .iloc[-20:-2]
-    )
-
-    sweep_level = (
-        previous_lows.min()
-    )
-
-    swept = (
-        trigger["Low"]
-        < sweep_level
-    )
-
-    reclaimed = (
-        confirm["Close"]
-        > sweep_level
-    )
-
-    print(
-        f"BULL SWEEP | "
-        f"Swept={swept} "
-        f"Reclaimed={reclaimed} "
-        f"Level={round(sweep_level,2)}"
-    )
-
-    if not (swept and reclaimed):
-        return None
-
-    depth_pct = round(
-        (
-            abs(
-                trigger["Low"]
-                - sweep_level
-            )
-            /
-            sweep_level
+    def detect_bullish_sweep(
+        self,
+        df_60m
+    ):
+    
+        if len(df_60m) < 25:
+            return None
+    
+        trigger = df_60m.iloc[-2]
+    
+        confirm = df_60m.iloc[-1]
+    
+        previous_lows = (
+            df_60m["Low"]
+            .iloc[-20:-2]
         )
-        * 100,
-        2
-    )
-
-    return {
-        "valid": True,
-        "sweep_level": float(
-            sweep_level
-        ),
-        "depth_pct": depth_pct
-    }
-
-   # =========================
-# Bearish Sweep
-# =========================
-
-def detect_bearish_sweep(
-    self,
-    df_60m
-):
-
-    if len(df_60m) < 25:
-        return None
-
-    trigger = df_60m.iloc[-2]
-
-    confirm = df_60m.iloc[-1]
-
-    previous_highs = (
-        df_60m["High"]
-        .iloc[-20:-2]
-    )
-
-    sweep_level = (
-        previous_highs.max()
-    )
-
-    swept = (
-        trigger["High"]
-        > sweep_level
-    )
-
-    reclaimed = (
-        confirm["Close"]
-        < sweep_level
-    )
-
-    print(
-        f"BEAR SWEEP | "
-        f"Swept={swept} "
-        f"Reclaimed={reclaimed} "
-        f"Level={round(sweep_level,2)}"
-    )
-
-    if not (swept and reclaimed):
-        return None
-
-    depth_pct = round(
-        (
-            abs(
-                trigger["High"]
-                - sweep_level
-            )
-            /
-            sweep_level
+    
+        sweep_level = (
+            previous_lows.min()
         )
-        * 100,
-        2
-    )
+    
+        swept = (
+            trigger["Low"]
+            < sweep_level
+        )
+    
+        reclaimed = (
+            confirm["Close"]
+            > sweep_level
+        )
+    
+        print(
+            f"BULL SWEEP | "
+            f"Swept={swept} "
+            f"Reclaimed={reclaimed} "
+            f"Level={round(sweep_level,2)}"
+        )
+    
+        if not (swept and reclaimed):
+            return None
+    
+        depth_pct = round(
+            (
+                abs(
+                    trigger["Low"]
+                    - sweep_level
+                )
+                /
+                sweep_level
+            )
+            * 100,
+            2
+        )
+    
+        return {
+            "valid": True,
+            "sweep_level": float(
+                sweep_level
+            ),
+            "depth_pct": depth_pct
+        }
 
-    return {
-        "valid": True,
-        "sweep_level": float(
-            sweep_level
-        ),
-        "depth_pct": depth_pct
-    }
+    # =========================
+    # Bearish Sweep
+    # =========================
+    
+    def detect_bearish_sweep(
+        self,
+        df_60m
+    ):
+    
+        if len(df_60m) < 25:
+            return None
+    
+        trigger = df_60m.iloc[-2]
+    
+        confirm = df_60m.iloc[-1]
+    
+        previous_highs = (
+            df_60m["High"]
+            .iloc[-20:-2]
+        )
+    
+        sweep_level = (
+            previous_highs.max()
+        )
+    
+        swept = (
+            trigger["High"]
+            > sweep_level
+        )
+    
+        reclaimed = (
+            confirm["Close"]
+            < sweep_level
+        )
+    
+        print(
+            f"BEAR SWEEP | "
+            f"Swept={swept} "
+            f"Reclaimed={reclaimed} "
+            f"Level={round(sweep_level,2)}"
+        )
+    
+        if not (swept and reclaimed):
+            return None
+    
+        depth_pct = round(
+            (
+                abs(
+                    trigger["High"]
+                    - sweep_level
+                )
+                /
+                sweep_level
+            )
+            * 100,
+            2
+        )
+    
+        return {
+            "valid": True,
+            "sweep_level": float(
+                sweep_level
+            ),
+            "depth_pct": depth_pct
+        }
     # =========================
     # Bullish MSS
     # =========================
