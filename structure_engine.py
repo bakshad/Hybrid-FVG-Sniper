@@ -395,12 +395,9 @@ class StructureEngine:
             f"Trigger={trigger}"
         )
             
-        if not mss:
+        if not mss and not trigger:
             return None
-
-        if not trigger:
-            return None
-
+        
         score = self.calculate_score(
             sweep["depth_pct"],
             mss,
