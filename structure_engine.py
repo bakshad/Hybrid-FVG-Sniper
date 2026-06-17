@@ -50,10 +50,10 @@ class StructureEngine:
         )
     
         print(
+            f"[{df_60m.index[-1]}] "
             f"BULL SWEEP | "
             f"Swept={swept} "
-            f"Reclaimed={reclaimed} "
-            f"Level={round(sweep_level,2)}"
+            f"Reclaimed={reclaimed}"
         )
     
         if not (swept and reclaimed):
@@ -116,10 +116,10 @@ class StructureEngine:
         )
     
         print(
-            f"BEAR SWEEP | "
+            f"[{df_60m.index[-1]}] "
+            f"BULL SWEEP | "
             f"Swept={swept} "
-            f"Reclaimed={reclaimed} "
-            f"Level={round(sweep_level,2)}"
+            f"Reclaimed={reclaimed}"
         )
     
         if not (swept and reclaimed):
