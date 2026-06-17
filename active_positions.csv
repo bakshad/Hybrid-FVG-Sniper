@@ -1,1 +1,2 @@
 Symbol,Side,Entry,SL,SweepLevel,InitialRisk,Qty,RemainingQty,T1Qty,T2Qty,RunnerQty,RealizedPnL,EntryCapital,Score,Grade,T1,T2,T1Hit,T2Hit,RunnerActive,HighestPrice,LowestPrice,ChandelierStop,EntryTime,LastUpdateTime,Status
+SUNPHARMA,SELL,1820.4,1824.4,1821.4,4.0,125,125,50,37,38,0.0,50000,70.56,IGNORE,1812.4,1804.41,False,False,True,1820.4000244140625,1820.4000244140625,1824.4,2026-06-17 17:13:18.606692,2026-06-17 17:13:18.606692,OPEN
