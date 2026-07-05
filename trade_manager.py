@@ -16,6 +16,7 @@ Part A
 
 import math
 from datetime import datetime
+import pandas as pd
 
 from config import (
     STARTING_CAPITAL,
@@ -40,9 +41,12 @@ class TradeManager:
 
     @staticmethod
     def calculate_chandelier_long(df_daily):
-
-        atr = float(df_daily["ATR"].iloc[-1])
-
+        atr = float(
+            self.calculate_atr(
+                df_daily
+            ).iloc[-1]
+        )
+        
         highest_high = (
             df_daily["High"]
             .tail(CHANDELIER_PERIOD)
@@ -64,8 +68,12 @@ class TradeManager:
     @staticmethod
     def calculate_chandelier_short(df_daily):
 
-        atr = float(df_daily["ATR"].iloc[-1])
-
+        atr = float(
+            self.calculate_atr(
+                df_daily
+            ).iloc[-1]
+        )
+        
         lowest_low = (
             df_daily["Low"]
             .tail(CHANDELIER_PERIOD)
@@ -80,6 +88,46 @@ class TradeManager:
 
         return round(stop, 2)
 
+class TradeManager:
+
+    ...
+
+    # ==================================================
+    # ATR
+    # ==================================================
+
+    @staticmethod
+    def calculate_atr(
+        df,
+        period=14
+    ):
+
+        high_low = df["High"] - df["Low"]
+
+        high_close = (
+            df["High"]
+            - df["Close"].shift()
+        ).abs()
+
+        low_close = (
+            df["Low"]
+            - df["Close"].shift()
+        ).abs()
+
+        tr = (
+            pd.concat(
+                [
+                    high_low,
+                    high_close,
+                    low_close
+                ],
+                axis=1
+            ).max(axis=1)
+        )
+
+        return tr.rolling(period).mean()
+
+        
     # ==================================================
     # Risk Amount
     # ==================================================
