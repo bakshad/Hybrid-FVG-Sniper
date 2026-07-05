@@ -5,9 +5,12 @@ on:
   workflow_dispatch:
 
   schedule:
-    # Every hour during market days
-    - cron: "0 * * * 1-5"
+  # Every 15 minutes during NSE market hours (09:15–15:30 IST)
+  - cron: "45 3 * * 1-5"
+  - cron: "0,15,30,45 4-9 * * 1-5"
+  - cron: "0 10 * * 1-5"
 
+  
 jobs:
 
   run-bot:
@@ -47,6 +50,7 @@ jobs:
           git add active_positions.csv || true
           git add trade_history.csv || true
           git add signal_dataset.csv || true
+          git add logs/*.csv || true
 
           git diff --staged --quiet || git commit -m "Bot update [skip ci]"
 
