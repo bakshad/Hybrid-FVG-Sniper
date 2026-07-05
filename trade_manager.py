@@ -39,14 +39,17 @@ class TradeManager:
     # Chandelier Long
     # ==================================================
 
-    @staticmethod
-    def calculate_chandelier_long(df_daily):
+    def calculate_chandelier_long(
+        self,
+        df_daily
+    ):
+
         atr = float(
             self.calculate_atr(
                 df_daily
             ).iloc[-1]
         )
-        
+
         highest_high = (
             df_daily["High"]
             .tail(CHANDELIER_PERIOD)
@@ -65,15 +68,17 @@ class TradeManager:
     # Chandelier Short
     # ==================================================
 
-    @staticmethod
-    def calculate_chandelier_short(df_daily):
+    def calculate_chandelier_short(
+        self,
+        df_daily
+    ):
 
         atr = float(
             self.calculate_atr(
                 df_daily
             ).iloc[-1]
         )
-        
+
         lowest_low = (
             df_daily["Low"]
             .tail(CHANDELIER_PERIOD)
@@ -88,10 +93,6 @@ class TradeManager:
 
         return round(stop, 2)
 
-class TradeManager:
-
-    ...
-
     # ==================================================
     # ATR
     # ==================================================
@@ -102,16 +103,16 @@ class TradeManager:
         period=14
     ):
 
-        high_low = df["High"] - df["Low"]
+        high_low = (
+            df["High"] - df["Low"]
+        )
 
         high_close = (
-            df["High"]
-            - df["Close"].shift()
+            df["High"] - df["Close"].shift()
         ).abs()
 
         low_close = (
-            df["Low"]
-            - df["Close"].shift()
+            df["Low"] - df["Close"].shift()
         ).abs()
 
         tr = (
@@ -122,7 +123,8 @@ class TradeManager:
                     low_close
                 ],
                 axis=1
-            ).max(axis=1)
+            )
+            .max(axis=1)
         )
 
         return tr.rolling(period).mean()
